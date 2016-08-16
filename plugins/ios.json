@@ -1,0 +1,71 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-appversion": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-contacts": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cn.jpush.phonegap.JPushPlugin": {
+            "API_KEY": "ff34aa808df3c3534924109e",
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-keyboard": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        },
+        "com.verso.cordova.clipboard": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.cdpgroupltd.WeStar"
+        }
+    }
+}

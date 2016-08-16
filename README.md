@@ -1,1 +1,0 @@
-# WeStar_android_enviroment

@@ -1,0 +1,39 @@
+
+@font-face {font-family: "WeStar_iconfont";
+  src: url('iconfont.eot?t=1471230323'); /* IE9*/
+  src: url('iconfont.eot?t=1471230323#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1471230323') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1471230323') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1471230323#WeStar_iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.WeStar_iconfont {
+  font-family:"WeStar_iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+.WeStar_icon-roundcheck:before { content: "\e600"; }
+.WeStar_icon-roundclose:before { content: "\e603"; }
+.WeStar_icon-round:before { content: "\e604"; }
+.WeStar_icon-kaoqin:before { content: "\e611"; }
+.WeStar_icon-question:before { content: "\e614"; }
+.WeStar_icon-location:before { content: "\e60a"; }
+.WeStar_icon-question1:before { content: "\e615"; }
+.WeStar_icon-circle:before { content: "\e605"; }
+.WeStar_icon-circle1:before { content: "\e609"; }
+.WeStar_icon-check:before { content: "\e601"; }
+.WeStar_icon-location1:before { content: "\e60b"; }
+.WeStar_icon-circle2:before { content: "\e606"; }
+.WeStar_icon-gongsi:before { content: "\e60f"; }
+.WeStar_icon-arrow-down:before { content: "\e613"; }
+.WeStar_icon-arrowdown:before { content: "\e610"; }
+.WeStar_icon-edit:before { content: "\e602"; }
+.WeStar_icon-location2:before { content: "\e60c"; }
+.WeStar_icon-guanbi2fill:before { content: "\e607"; }
+.WeStar_icon-yuanxingxuanzhongfill:before { content: "\e608"; }
+.WeStar_icon-shenhetongguo:before { content: "\e60d"; }
+.WeStar_icon-3:before { content: "\e60e"; }
+.WeStar_icon-tongji:before { content: "\e612"; }

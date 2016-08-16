@@ -1,0 +1,146 @@
+<div class="page-content" style="background-color: #F0EFF5;display: flex;flex-direction: column;">
+	{{#if isNull}}
+		{{> nullCard}}
+	{{else}}
+	    <div class="basic-info-card">
+	    	<div class="user-info">
+	    		<div class="user-image">
+	    			<img src="{{data.applyPerson.image}}" onerror="javascript:this.src='./img/default.jpg';" style="width:100%;height:100%">
+	    		</div>
+	    		<div class="user-describtion">
+	    			<span style = "font-size:14px;color: black;font-weight: bold;">{{data.applyPerson.name}}</span>
+	    			<span>{{data.finalStatus.display}}</span>
+	    		</div>
+	    	</div>
+	    	<div class="apply-descrition">
+	    		{{#each data.leaveGeneral}}
+	    			<div class="apply-item">
+	    				<span>{{title}}:</span>
+	    				<span class="value">{{value}}</span>
+	    			</div>
+	    		{{/each}}
+	    	</div>
+	    	<div class="final-status-image">
+	    		{{#compare data.finalStatus.code '===' '2'}}
+	    			<i class="WeStar_iconfont status-2">&#xe60d;</i>
+	    			{{else}}
+	    				{{#compare data.finalStatus.code '===' '3'}}
+	    					<i class="WeStar_iconfont status-3">&#xe60e;</i>
+	    				{{/compare}}
+	    		{{/compare}}
+	    	</div>
+    	</div>
+	    <div class="approve-flow-card" style="flex:1">
+	    	<div class="one-item">
+	    		<div class = "status-img">
+	    			<i class="WeStar_iconfont status-2">&#xe608;</i>
+				</div>
+	        	<div class="b_main">
+	        		{{#if data.applyPerson.updateTime}}
+						<div class="border">
+					{{else}}
+						<div class="border withoutTime">
+					{{/if}}
+						<div class="user-info-time">
+							<span>{{data.applyPerson.updateTime}}</span>
+						</div>
+						<div class="user-info">
+				    		<div class="user-image">
+				    			<img src="{{data.applyPerson.image}}" onerror="javascript:this.src='./img/default.jpg';" style="width:100%;height:100%">
+				    		</div>
+				    		<div class="user-describtion">
+				    			<span class="name">{{data.applyPerson.name}}</span>
+				    			<span class="status-2">{{data.applyPerson.status.display}}</span>
+				    			<span>{{data.applyPerson.status.msg}}</span>
+				    		</div>
+				    	</div>
+					</div> 
+					<div class="out"> 
+						<div class="in"></div>
+					</div>
+				</div>
+	    	</div>
+	    	{{#each data.approvePerson}}
+		    	<div class="one-item">
+		    		<div class = "status-img">
+	    				{{#compare status.code '===' '1'}}
+	    					<i class="WeStar_iconfont status-1">&#xe604;</i>
+	    					{{else}}
+			    				{{#compare status.code '===' '3'}}
+				    				<i class="WeStar_iconfont status-3">&#xe607;</i>
+				    				{{else}}
+				    					{{#compare status.code '===' '0'}}
+				    						<div class="status-0"></div>
+				    					{{else}}
+				    						<i class="WeStar_iconfont status-2">&#xe608;</i>
+				    					{{/compare}}
+		    					{{/compare}}
+		    			{{/compare}}
+					</div>
+		        	<div class="b_main">
+		        		{{#if updateTime}}
+						<div class="border">
+						{{else}}
+						<div class="border withoutTime">
+						{{/if}}
+							<div class="user-info-time">
+								<span>{{updateTime}}</span>
+							</div>
+							<div class="user-info">
+					    		<div class="user-image">
+					    			<img src="{{image}}" onerror="javascript:this.src='./img/default.jpg';" style="width:100%;height:100%">
+					    		</div>
+					    		<div class="user-describtion">
+					    			<span class="name">{{name}}</span>
+					    			<span class="status-{{status.code}}">{{status.display}}</span>
+					    			<span>{{status.msg}}</span>
+					    		</div>
+					    	</div>
+						</div> 
+						<div class="out"> 
+							<div class="in"></div>
+						</div>
+					</div>
+		    	</div>
+	    	{{/each}}
+	    	<hr class="flow-line" width= "1">	
+    	</div>
+    {{/if}}
+    {{#compare code '===' 0}}
+    <div class="item-content detail-edit-content">
+      	<div class="item-inner">
+        	<div class="item-input">
+        		<div class="item-title label detail-reson-label">{{i18n-text 'cancel-reason'}}</div>
+          		<textarea id="leave-reson" class="resizable weui_input detail-reson-text" placeholder="{{i18n-text 'input-more'}}"></textarea>
+        	</div>
+      	</div>
+    </div>
+    {{/compare}}
+    {{#compare code '===' 2}}
+    <div class="item-content detail-edit-content">
+      	<div class="item-inner">
+        	<div class="item-input">
+        		<div class="item-title label detail-reson-label">{{i18n-text 'approval-remark'}}</div>
+          		<textarea id="leave-reson"  class="resizable weui_input detail-reson-text" placeholder="{{i18n-text 'input-more'}}"></textarea>
+        	</div>
+      	</div>
+    </div>
+    {{/compare}}
+</div>
+{{#compare code '===' 0}}
+	<div class="toolbar">
+		<div class="toolbar-inner" style="justify-content: center;">
+			<a href="#" class="cancel-link-actions">{{i18n-text 'cancel-apply'}}</a>
+		</div>
+	</div>
+{{/compare}}
+
+{{#compare code '===' 2}}
+	<div class="toolbar">
+		<div class="toolbar-inner">
+			<a href="#" class="approve-link-actions"  code="1"><i class="WeStar_iconfont action-button-icon">&#xe603;</i>{{i18n-text 'refuse-apply'}}</a>
+			<a href="#" class="approve-link-actions status-3" code="0"><i class="WeStar_iconfont action-button-icon">&#xe600;</i>{{i18n-text 'approve-apply'}}</a>
+		</div>
+	</div>
+{{/compare}}
+
