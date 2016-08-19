@@ -60,7 +60,19 @@ define(["app"], function(app) {
     function loginEvent(userName, pwd) {
         showLoading();
         var language = localStorage.getItem('language') || 'en_us';
-        var url = ess_getUrl("user/userService/loginByMobile/") + "&username=" + userName + "&password=" + pwd +"&language=" + language;
+        var new_language = 'english';
+        switch(language){
+            case 'zh_cn' : {
+                new_language = 'chinese';
+                break;
+            }
+            case 'zh_tw' : {
+                new_language = 'big5';
+                break;
+            }
+            default : new_language = 'english';
+        }
+        var url = ess_getUrl("user/userService/loginByMobile/") + "&username=" + userName + "&password=" + pwd +"&language=" + new_language;
         var onStarSuccess = function(data) { //1:success;0:pwd error;-1:user not exist
             closeLoading();
             if (parseInt(data.status) === 1) {

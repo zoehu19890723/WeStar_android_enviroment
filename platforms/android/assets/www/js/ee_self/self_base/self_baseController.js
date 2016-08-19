@@ -95,7 +95,7 @@ define(["app"], function(app) {
 
     function quitSystem() {
 
-        app.f7.confirm('您确定要退出系统么？',
+        app.f7.confirm(getI18NText('sureQuit'),
             function() {
                 var userName = localStorage.getItem("userName");
                 var passWord = localStorage.getItem("passWord");

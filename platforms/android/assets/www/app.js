@@ -13,23 +13,27 @@ require.config({
 
 define('app', ['js/router','js/locale','handlebars'], function (Router, Locale) {
     Router.init();
+    document.addEventListener("backbutton", eventBackButton, false);
+    
+    var language = localStorage.getItem('language') || 'en_us';
+    var sure = (Locale[language] !== undefined) ? (Locale[language])['confirmP'] : 'Ok';
+    var cancel = (Locale[language] !== undefined) ? (Locale[language])['cancelP'] : 'Cancel'
+    var exitAfterAgainTap = (Locale[language] !== undefined) ? (Locale[language])['exitAfterAgainTap'] : 'Exit after another press';
+    
     var f7 = new Framework7({
         modalTitle: '',
-        //swipePanel: 'left',
         animateNavBackIcon: true,
         dynamicNavbar:true,
         cache:true,
-        modalButtonOk: '确认',
-        modalButtonCancel: '取消'
+        modalButtonOk: sure,
+        modalButtonCancel: cancel
     });
 
-
-    document.addEventListener("backbutton", eventBackButton, false);
     function eventBackButton(){
         if($('.icon-back').length!=0){
             $('.icon-back').click();
         }else{
-            f7.alert("再按一次退出");
+            f7.alert(exitAfterAgainTap);
             document.removeEventListener("backbutton", eventBackButton, false); // 注销返回键
             document.addEventListener("backbutton", exitApp, false);//绑定退出事件
 
@@ -45,8 +49,8 @@ define('app', ['js/router','js/locale','handlebars'], function (Router, Locale) 
     function exitApp(){
         navigator.app.exitApp();
     }
-    registerCommonTemplete();
 
+    registerCommonTemplete();
     var mainView = f7.addView('.view-main', {
         dynamicNavbar: true
     });

@@ -9,12 +9,23 @@ function onDeviceReady() {
 	deviceInfo.model = device.model; //设备模型（如三星，华为等）
 	deviceInfo.version = device.version; //设备版本
 	localStorage.setItem('deviceUUID',device.uuid);
-
-	var onGPLSuccess = function(language){
+    var onGPLSuccess = function(language){
 		if(localStorage.getItem("languageSet") !== "true"){
 			var new_language = 'en_us';
 			if(language !== undefined && language !== null && language.value !== undefined){
-				new_language = (language.value).toLowerCase().replace("-", "_");
+                if(device.platform.toLowerCase() === 'ios'){
+                    if(language.value.indexOf('zh-Hans-') > -1){
+                        new_language = 'zh_cn';
+                    }else if(language.value.indexOf('zh-Hant-') > -1){
+                        new_language = 'zh_tw'
+                    }else{
+                        new_language = 'en_us';
+                    }
+                }else{
+                  
+                   new_language = (language.value).toLowerCase().replace("-", "_");
+                }
+				
 				if(new_language !== 'en_us' && new_language !== 'zh_cn' &&  new_language !== 'zh_tw'){
 					new_language = 'en_us';
 				}
@@ -417,6 +428,7 @@ function registerCommonTemplete() {
 	registerNullTemplete();
 	registerCompareFunction();
 	registerI18NHelper();
+
 }
 
 /**

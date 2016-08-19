@@ -228,7 +228,8 @@ define(function() {
 		'DataLoading' : '数据加载中...',
 		'GeoLoading' : '正在定位中...',
 		'session-overtime' : '会话超时，重新登录',
-		'see-detail' : '查看详情'
+		'see-detail' : '查看详情',
+		'exitAfterAgainTap' : '再按一次退出'
 
 
 	}
@@ -461,7 +462,9 @@ define(function() {
 		'DataLoading' : '數據加載中...',
 		'GeoLoading' : '正在定位中...',
 		'session-overtime' : '會話超時，重新登錄',
-		'see-detail' : '查看詳情'
+		'see-detail' : '查看詳情',
+
+		'exitAfterAgainTap' : '再按壹次退出'
 	}
 
 	var locale_EN ={
@@ -693,7 +696,9 @@ define(function() {
 		'DataLoading' : 'Data loading...',
 		'GeoLoading' : 'Being positioned...',
 		'session-overtime' : 'The session timeout , please login again;',
-		'see-detail' : 'see details'
+		'see-detail' : 'see details',
+
+		'exitAfterAgainTap' : 'Exit after another press'
 	}
 
 	return {
