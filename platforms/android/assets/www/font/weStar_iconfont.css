@@ -1,10 +1,10 @@
 
 @font-face {font-family: "WeStar_iconfont";
-  src: url('iconfont.eot?t=1471230323'); /* IE9*/
-  src: url('iconfont.eot?t=1471230323#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1471230323') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1471230323') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1471230323#WeStar_iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1471848747'); /* IE9*/
+  src: url('iconfont.eot?t=1471848747#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1471848747') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1471848747') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1471848747#WeStar_iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .WeStar_iconfont {
@@ -18,6 +18,7 @@
 .WeStar_icon-roundcheck:before { content: "\e600"; }
 .WeStar_icon-roundclose:before { content: "\e603"; }
 .WeStar_icon-round:before { content: "\e604"; }
+.WeStar_icon-back:before { content: "\e618"; }
 .WeStar_icon-kaoqin:before { content: "\e611"; }
 .WeStar_icon-question:before { content: "\e614"; }
 .WeStar_icon-location:before { content: "\e60a"; }
@@ -36,4 +37,6 @@
 .WeStar_icon-yuanxingxuanzhongfill:before { content: "\e608"; }
 .WeStar_icon-shenhetongguo:before { content: "\e60d"; }
 .WeStar_icon-3:before { content: "\e60e"; }
+.WeStar_icon-yiguoqi:before { content: "\e616"; }
 .WeStar_icon-tongji:before { content: "\e612"; }
+.WeStar_icon-yiguoqi1:before { content: "\e617"; }

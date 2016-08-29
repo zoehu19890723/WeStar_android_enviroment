@@ -1,73 +1,74 @@
 <div data-page="list" class="page toolbar-fixed">
-                        <div class="toolbar tabbar tabbar-labels">
-                            <div class="toolbar-inner">
-                                <a href="#" class="tab-link" toPage="myProfile">
-                                    <i class="WeSpark_iconfont bigger-icon">&#xe629</i>
-                                    <span class="tabbar-label">{{i18n-text 'home'}}</span>
-                                </a>
-                                <!--<a href="#" class="tab-link" toPage="myMessage">-->
-                                    <!--<i class="WeSpark_iconfont bigger-icon">&#xe639</i>-->
-                                    <!--<span class="tabbar-label">{{i18n-text 'news'}}</span>-->
-                                <!--</a>-->
-                                <a href="#" class="tab-link active" toPage="myContact">
-                                    <i class="WeSpark_iconfont bigger-icon">&#xe61b</i>
-                                    <span class="tabbar-label">{{i18n-text 'contact'}}</span>
-                                </a>
-                                <a href="#" class="tab-link" toPage="mySelf">
-                                    <i class="WeSpark_iconfont bigger-icon">&#xe61c</i>
-                                    <span class="tabbar-label">{{i18n-text 'myself'}}</span>
-                                </a>
-                            </div>
-                        </div>
-                        <form class="searchbar searchbar-init" data-found=".searchbar-found" data-not-found=".searchbar-not-found">
-                            <div class="searchbar-input">
-                                <input type="search" placeholder="Search">
-                                <a href="#" class="searchbar-clear"></a>
-                            </div>
-                            <a href="#" class="searchbar-cancel">Cancel</a>
-                        </form>
+        <div class="toolbar tabbar tabbar-labels">
+            <div class="toolbar-inner">
+                <a href="#" class="tab-link" toPage="myProfile">
+                    <i class="WeSpark_iconfont bigger-icon">&#xe629</i>
+                    <span class="tabbar-label">{{i18n-text 'home'}}</span>
+                </a>
+                {{!-- <a href="#" class="tab-link" toPage="myMessage">
+                    <i class="WeSpark_iconfont bigger-icon">&#xe639</i>
+                    <span class="tabbar-label">{{i18n-text 'news'}}</span>
+                </a> --}}
+                <a href="#" class="tab-link active" toPage="myContact">
+                    <i class="WeSpark_iconfont bigger-icon">&#xe61b</i>
+                    <span class="tabbar-label">{{i18n-text 'contact'}}</span>
+                </a>
+                <a href="#" class="tab-link" toPage="mySelf">
+                    <i class="WeSpark_iconfont bigger-icon">&#xe61c</i>
+                    <span class="tabbar-label">{{i18n-text 'myself'}}</span>
+                </a>
+            </div>
+        </div>
 
-                        <div class="searchbar-overlay"></div>
+        <form class="searchbar searchbar-init" data-found=".searchbar-found" data-not-found=".searchbar-not-found">
+            <div class="searchbar-input">
+                <input type="search" placeholder="Search">
+                <a href="#" class="searchbar-clear"></a>
+            </div>
+            <a href="#" class="searchbar-cancel">Cancel</a>
+        </form>
+
+        <div class="searchbar-overlay"></div>
 
 
-                        <div class="page-content">
-                            <div class="wx-group media-list contacts-list list-block list-block-search searchbar-found">
-                                <div class="list-group">
-                                   <ul class="wx-contacts">
-                                        {{#.}}
-                                        {{#each list}}
-                                        <li class="wx-title">&nbsp;&nbsp;&nbsp;{{letter}}</li>
-                                        {{#each childList}}
-                                        <li class="wx-item" data-id="{{id}}" data-name="{{name}}" data-color="{{color}}" data-email="{{email}}" data-gender="{{gender}}" data-mobile="{{mobile}}" data-photo="{{photo}}" data-pinyin="{{pinyin}}" data-post="{{position}}" data-supervisor="{{supervisor}}" data-favorite="{{favorite}}" data-photoText="{{photoText}}" data-organization="{{organization}}" toPage="contactDetail" >
-                                         <span class="wx-icon" id="ico_{{id}}">
-                                          {{#if photo}}
-                                           <img src={{photo}} width="36" height="36" onerror="javascript:this.src='./img/default.jpg';">
-                                           {{else}}
-                                          <span class="wx-photo bg-{{color}}">
-                                          <i class="fault-photo">{{photoText}}</i>
-                                            </span>
-                                           {{/if}}
-                                         </span>
-                                            <div class="wx-name">{{name}}<span>{{#if search}}{{mobile}}</span>{{/if}}
-                                            </div>
-                                            {{#if position}}
-                                            <div class="wx-pos">{{position}}<span>{{#if search}}{{mobile}}</span>{{/if}}
-                                            {{else}}
-                                                <div class="wx-pos">{{mobile}}
-                                            {{/if}}
-                                            </div>
-                                        </li>
-                                        {{/each}}
-                                        </li>
-                                        {{/each}}
-                                        {{/.}}
-                                    </ul>
-                                    </div>
-
+        <div class="page-content">
+            <div class="wx-group media-list contacts-list list-block list-block-search searchbar-found">
+                <div class="list-group">
+                   <ul class="wx-contacts">
+                        {{#.}}
+                        {{#each list}}
+                        <li class="wx-title">&nbsp;&nbsp;&nbsp;{{letter}}</li>
+                        {{#each childList}}
+                        <li class="wx-item" data-id="{{id}}" data-name="{{name}}" data-color="{{color}}" data-email="{{email}}" data-gender="{{gender}}" data-mobile="{{mobile}}" data-photo="{{photo}}" data-pinyin="{{pinyin}}" data-post="{{position}}" data-supervisor="{{supervisor}}" data-favorite="{{favorite}}" data-photoText="{{photoText}}" data-organization="{{organization}}" toPage="contactDetail" >
+                         <span class="wx-icon" id="ico_{{id}}">
+                          {{#if photo}}
+                           <img src={{photo}} width="36" height="36" onerror="javascript:this.src='./img/default.jpg';">
+                           {{else}}
+                          <span class="wx-photo bg-{{color}}">
+                          <i class="fault-photo">{{photoText}}</i>
+                            </span>
+                           {{/if}}
+                         </span>
+                            <div class="wx-name">{{name}}<span>{{#if search}}{{mobile}}</span>{{/if}}
                             </div>
-                            <div class="content-block searchbar-not-found">
-                                Nothing found
+                            {{#if position}}
+                            <div class="wx-pos">{{position}}<span>{{#if search}}{{mobile}}</span>{{/if}}
+                            {{else}}
+                                <div class="wx-pos">{{mobile}}
+                            {{/if}}
                             </div>
-                        </div>
+                        </li>
+                        {{/each}}
+                        </li>
+                        {{/each}}
+                        {{/.}}
+                    </ul>
                     </div>
+
+            </div>
+            <div class="content-block searchbar-not-found">
+                Nothing found
+            </div>
+        </div>
+    </div>
 </div>

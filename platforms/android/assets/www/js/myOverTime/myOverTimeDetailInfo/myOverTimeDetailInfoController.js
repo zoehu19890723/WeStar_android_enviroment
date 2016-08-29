@@ -67,8 +67,16 @@ define(["app"], function(app) {
                 if (model_.data && model_.data.flowPerson !== undefined && model_.data.flowPerson !== null) {
                     var heightTop = $('.one-item').first().find('.status-img').offset().top;
                     var heightBottom = $('.one-item').last().find('.status-img').offset().top;
-                    var height = heightBottom - heightTop + 40;
+                    var height = heightBottom - heightTop + 30;
                     $('.flow-line').height(height);
+
+                    var totalHeight =  $('.page-content').height()-88;
+                    var blockHeight = $('.basic-info-card').height() + $('.approve-flow-card').height() +16 +95;
+
+                    if(totalHeight > blockHeight){
+                        var marginTop = totalHeight - blockHeight;
+                        $('.item-content.detail-edit-content').css('margin-top',marginTop);
+                    }
                 }
             }
             var renderObject = {

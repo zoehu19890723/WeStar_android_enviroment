@@ -15,7 +15,7 @@ define(["app"], function(app) {
 
 
     var query_;
-    var serviceIP = localStorage.getItem('envUrl');
+    var serviceIP =Star_envUrl;
     var sessionID = localStorage.getItem('sessionid');
 
     function init(query) {
@@ -109,6 +109,8 @@ function onPhotoUrlSuccess(data) {
     data.lastIndexOf('?') > 0 ? imgURL = data.substring(0, data.lastIndexOf('?')) : imgURL = data;
     //$('#headPortrait-edit').attr('src',data);
     $('#picture-holder')[0].innerHTML = '<img src="' + data + '" width="200" height="200">'
+
+
 };
 
 function onUrlFail(error) {

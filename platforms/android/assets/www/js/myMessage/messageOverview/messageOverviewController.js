@@ -127,10 +127,6 @@ define(["app"], function(app) {
     function showList(model) {
         var afterRender = function() {
             weixin_hideToolBar()
-            var mySearchbar = app.f7.searchbar('.searchbar', {
-                searchList: '.wx-contacts',
-                searchIn: '.wx-name',
-            });
         }
         var renderObject = {
             selector: $('.myMessage'),
@@ -144,39 +140,9 @@ define(["app"], function(app) {
     }
 
     function seeDetail(e) {
-
-        var id = $(e.currentTarget).attr("toPage");
-        var id_ = $(e.currentTarget).attr("data-id");
-        var name = $(e.currentTarget).attr("data-name");
-        var color_ = $(e.currentTarget).attr("data-color");
-        var email = $(e.currentTarget).attr("data-email");
-        var gender = $(e.currentTarget).attr("data-gender");
-        var mobile = $(e.currentTarget).attr("data-mobile");
-        var photo = $(e.currentTarget).attr("data-photo");
-        var pinyin = $(e.currentTarget).attr("data-pinyin");
-        var post = $(e.currentTarget).attr("data-post");
-        var supervisor = $(e.currentTarget).attr("data-supervisor");
-        var favorite = $(e.currentTarget).attr("data-favorite");
-        var photoText = $(e.currentTarget).attr("data-photoText");
-        var organization = $(e.currentTarget).attr("data-organization");
-        var data = {
-            "id": id_,
-            "color": color_,
-            "favorite": favorite,
-            "photoText": photoText,
-            "email": email,
-            "name": name,
-            "gender": gender,
-            "mobile": mobile,
-            "photo": photo,
-            "pinyin": pinyin,
-            "post": post,
-            "supervisor":supervisor,
-            "organization":organization
-        };
-        var pla_data = JSON.stringify(data);
+        var id=$(e.currentTarget).attr("toPage");
         app.mainView.router.load({
-            url: "js/myContact/contactDetail/contactDetail.html?data=" + pla_data
+            url: "js/myMessage/"+id+"/"+id+".html"
         });
     }
 

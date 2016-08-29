@@ -35,22 +35,18 @@ define(["app"], function(app) {
                     $('#mySalary-calender').css('visibility', 'visible');
                     storeWithExpiration.set('mySalary', data.data);
                     for (var i = 0; i < data.data.length; i++) {
-                        var obj = {
-                            id: i,
-                            date: data.data[i].date
-                        };
-                        ess_mySalary_month.push(obj);
+                        ess_mySalary_month.push(data.data[i].date);
                     }
 
                     var select_month = storeWithExpiration.get("salary_selected_month") ? storeWithExpiration.get("salary_selected_month") : ((ess_mySalary_month.length == 0) ? "" : ess_mySalary_month[0]);
                     storeWithExpiration.set("salary_selected_month", select_month);
 
                     var currentIndex = _.findIndex(data.data, {
-                        date: storeWithExpiration.get("salary_selected_month").date
+                        date: storeWithExpiration.get("salary_selected_month")
                     });
                     pla_wage.data = (currentIndex !== -1) ? data.data[currentIndex] : data.data[0];
 
-                    if(refresh !== true){
+                    if (refresh !== true) {
                         initPicker(ess_mySalary_month);
                     }
                 }
@@ -79,7 +75,7 @@ define(["app"], function(app) {
          */
         var onError = function(e) {
             closeLoading();
-            app.f7.alert(getI18NText('network-error'),function(){
+            app.f7.alert(getI18NText('network-error'), function() {
                 app.f7.initPullToRefresh($(".pull-to-refresh-content"));
             });
         }
@@ -113,7 +109,7 @@ define(["app"], function(app) {
         init: init
     };
 
-    function renderView(model){
+    function renderView(model) {
         var afterRender = function() {
             weixin_hideBackButton();
             var isWeixin = localStorage.getItem("isWeixin");
@@ -136,7 +132,7 @@ define(["app"], function(app) {
         viewRender(renderObject);
     }
 
-    function refreshContent(){
+    function refreshContent() {
         storeWithExpiration.remove('mySalary');
         init(true);
     }
@@ -157,42 +153,41 @@ define(["app"], function(app) {
                 '</div>' +
                 '</div>' +
                 '</div>',
+            value: [storeWithExpiration.get("salary_selected_month")],
             cols: [{
                 displayValues: (function() {
                     var arr = [];
                     $.each(ess_mySalary_month, function(index, value) {
-                        arr.push(value.date);
+                        var tempIndex = value.lastIndexOf('-');
+                        var result = value.substring(0, tempIndex);
+                        arr.push(result);
                     });
                     return arr;
                 })(),
                 values: (function() {
                     var arr = [];
                     $.each(ess_mySalary_month, function(index, value) {
-                        arr.push(value.id);
+                        arr.push(value);
                     });
                     return arr;
                 })()
             }],
-            onOpen: function(p) {
-                $('#mySalary-picker-month-sure').on('click', function(e) {
-                    if (myPicker.value !== storeWithExpiration.get("salary_selected_month").id) {
-                        var mySalary = storeWithExpiration.get('mySalary');
-                        var index = _.findIndex(ess_mySalary_month, {
-                            id: parseInt(myPicker.value)
-                        });
-                        var select_month = (index !== -1) ? mySalary[index] : storeWithExpiration.get("salary_selected_month");
+            onClose: function() {
+                if (myPicker.value[0] !== storeWithExpiration.get("salary_selected_month")) {
+                    var mySalary = storeWithExpiration.get('mySalary');
+                    var index = ess_mySalary_month.indexOf(myPicker.value[0]);
 
-                        storeWithExpiration.set("salary_selected_month", select_month);
+                    var select_month = (index !== -1) ? myPicker.value[0] : storeWithExpiration.get("salary_selected_month");
 
-                        var pla_wage = {
-                            isNull: false,
-                            data: (index !== -1) ? mySalary[index] : mySalary[0]
-                        };
+                    storeWithExpiration.set("salary_selected_month", select_month);
 
-                        renderView(pla_wage);
-                    }
+                    var pla_wage = {
+                        isNull: false,
+                        data: (index !== -1) ? mySalary[index] : mySalary[0]
+                    };
 
-                });
+                    renderView(pla_wage);
+                }
             }
         });
     }

@@ -1,4 +1,4 @@
-<div class="page-content" style="background-color: #F0EFF5;display: flex;flex-direction: column;">
+<div class="page-content" style="background-color: #F0EFF5;">
 	{{#if isNull}}
 		{{> nullCard}}
 	{{else}}
@@ -30,7 +30,7 @@
 	    		{{/compare}}
 	    	</div>
     	</div>
-	    <div class="approve-flow-card" style="flex:1">
+	    <div class="approve-flow-card">
 	    	<div class="one-item">
 	    		<div class = "status-img">
 	    			<i class="WeStar_iconfont status-2">&#xe608;</i>
@@ -139,8 +139,8 @@
 {{#compare code '===' 2}}
 	<div class="toolbar">
 		<div class="toolbar-inner">
-			<a href="#" class="approve-link-actions"  code="1"><i class="WeStar_iconfont action-button-icon">&#xe603;</i>{{i18n-text 'refuse-apply'}}</a>
-			<a href="#" class="approve-link-actions status-3" code="0"><i class="WeStar_iconfont action-button-icon">&#xe600;</i>{{i18n-text 'approve-apply'}}</a>
+			<a href="#" class="approve-link-actions status-3"  code="1"><i class="WeStar_iconfont action-button-icon">&#xe603;</i>{{i18n-text 'refuse-apply'}}</a>
+			<a href="#" class="approve-link-actions" code="0"><i class="WeStar_iconfont action-button-icon">&#xe600;</i>{{i18n-text 'approve-apply'}}</a>
 		</div>
 	</div>
 {{/compare}}

@@ -21,35 +21,35 @@ define(["app"], function(app) {
             loginEvent(userName, passWord);
             return false;
         }
+        app.router.load('login');
+        // if (device === 'ios') {
+        //     app.router.load('login');
+        // } else {
+        //     if (isFirstUse && isFirstUse == '1') {
+        //         app.router.load('login');
+        //     } else {
+        //         var renderObject = {
+        //             selector: $('#login-page-content'),
+        //             hbsUrl: "js/first_slider/first_slider",
+        //             model: {},
+        //             bindings: bindings,
+        //             afterRender : afterRender
+        //         }
+        //         viewRender(renderObject);
+        //     }
+        // }
 
-        if (device === 'ios') {
-            app.router.load('login');
-        } else {
-            if (isFirstUse && isFirstUse == '1') {
-                app.router.load('login');
-            } else {
-                var renderObject = {
-                    selector: $('#login-page-content'),
-                    hbsUrl: "js/first_slider/first_slider",
-                    model: {},
-                    bindings: bindings,
-                    afterRender : afterRender
-                }
-                viewRender(renderObject);
-            }
-        }
-
-        function afterRender() {
-            app.f7.swiper('.swiper-container', {
-                pagination: '.swiper-pagination'
-            });
-            var height = (document.documentElement.clientHeight) + 'px';
-            var scaleX = (document.documentElement.clientWidth) / 640;
-            var scaleY = (document.documentElement.clientHeight) / 1136;
-            $('.swiper-wrapper').css('height', height);
-            $('.aboutimg').css("-webkit-transform-origin", "0 0");
-            $('.aboutimg').css("-webkit-transform", "scale(" + scaleX + "," + scaleY + ")");
-        }
+        // function afterRender() {
+        //     app.f7.swiper('.swiper-container', {
+        //         pagination: '.swiper-pagination'
+        //     });
+        //     var height = (document.documentElement.clientHeight) + 'px';
+        //     var scaleX = (document.documentElement.clientWidth) / 640;
+        //     var scaleY = (document.documentElement.clientHeight) / 1136;
+        //     $('.swiper-wrapper').css('height', height);
+        //     $('.aboutimg').css("-webkit-transform-origin", "0 0");
+        //     $('.aboutimg').css("-webkit-transform", "scale(" + scaleX + "," + scaleY + ")");
+        // }
     }
 
     /**

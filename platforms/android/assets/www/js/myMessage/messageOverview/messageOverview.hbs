@@ -19,35 +19,37 @@
             </a>
         </div>
     </div>
-    <form class="searchbar searchbar-init" data-found=".searchbar-found" data-not-found=".searchbar-not-found">
-        <div class="searchbar-input">
-            <input type="search" placeholder="Search">
-            <a href="#" class="searchbar-clear"></a>
-        </div>
-        <a href="#" class="searchbar-cancel">Cancel</a>
-    </form>
-
-    <div class="searchbar-overlay"></div>
-
-
     <div class="page-content">
         <div class="wx-group media-list contacts-list list-block list-block-search searchbar-found">
             <div class="list-group">
                 <ul class="wx-contacts">
-                    {{#.}}
-                        {{#each list}}
-                            {{#each childList}}
-                                <li class="wx-item" data-id="{{id}}" data-name="{{name}}" data-color="{{color}}" data-email="{{email}}" data-gender="{{gender}}" data-mobile="{{mobile}}" data-photo="{{photo}}" data-pinyin="{{pinyin}}" data-post="{{position}}" data-supervisor="{{supervisor}}" data-favorite="{{favorite}}" data-photoText="{{photoText}}" data-organization="{{organization}}" toPage="contactDetail" >
+
+                                <li class="wx-item" data-id="{{id}}" data-name="{{name}}" data-color="{{color}}" data-email="{{email}}" data-gender="{{gender}}" data-mobile="{{mobile}}" data-photo="{{photo}}" data-pinyin="{{pinyin}}" data-post="{{position}}" data-supervisor="{{supervisor}}" data-favorite="{{favorite}}" data-photoText="{{photoText}}" data-organization="{{organization}}" toPage="companyNews" >
                                          <span class="wx-icon" id="ico_{{id}}">
-                                             {{#if photo}}
-                                                 <img src={{photo}} width="36" height="36" onerror="javascript:this.src='./img/default.jpg';">
-                                             {{else}}
-                                                 <span class="wx-photo bg-{{color}}">
-                                          <i class="fault-photo">{{photoText}}</i>
+                                             <span class="wx-photo bg-blue">
+                                           <i class="fault-photo WeSpark_iconfont">&#xe63e;</i>
                                             </span>
-                                             {{/if}}
                                          </span>
-                                    <div class="wx-name">{{name}}<span>{{#if search}}{{mobile}}</span>{{/if}}
+                                    <div class="wx-name">公司动态<span>1222</span>
+                                    </div>
+
+                                    <div class="wx-pos">1234<span></span>
+
+                                </div>
+                                </li>
+
+                                <li class="wx-item" data-id="{{id}}" data-name="{{name}}" data-color="{{color}}" data-email="{{email}}" data-gender="{{gender}}" data-mobile="{{mobile}}" data-photo="{{photo}}" data-pinyin="{{pinyin}}" data-post="{{position}}" data-supervisor="{{supervisor}}" data-favorite="{{favorite}}" data-photoText="{{photoText}}" data-organization="{{organization}}" toPage="approveDetail" >
+                                         <span class="wx-icon" id="ico_{{id}}">
+                                                 <span class="wx-photo bg-pink">
+                                           <i class="fault-photo WeSpark_iconfont">&#xe63d;</i>
+                                                     <i class="pushFlagNum-m"><span class="font-s">2</span></i>
+                                            </span>
+                                                <span >
+
+                                            </span>
+
+                                         </span>
+                                    <div class="wx-name">审批动态<span>{{#if search}}{{mobile}}</span>{{/if}}
                                     </div>
                                     {{#if position}}
                                     <div class="wx-pos">{{position}}<span>{{#if search}}{{mobile}}</span>{{/if}}
@@ -56,9 +58,23 @@
                                     {{/if}}
                                 </div>
                                 </li>
-                            {{/each}}
-                        {{/each}}
-                    {{/.}}
+
+                    <li class="wx-item" data-id="{{id}}" data-name="{{name}}" data-color="{{color}}" data-email="{{email}}" data-gender="{{gender}}" data-mobile="{{mobile}}" data-photo="{{photo}}" data-pinyin="{{pinyin}}" data-post="{{position}}" data-supervisor="{{supervisor}}" data-favorite="{{favorite}}" data-photoText="{{photoText}}" data-organization="{{organization}}" toPage="unusualAttendance" >
+                                         <span class="wx-icon" id="ico_{{id}}">
+                                             <span class="wx-photo bg-yellow">
+                                                 <i class="fault-photo WeSpark_iconfont">&#xe63b;</i>
+                                                 <i class="right-top WeSpark_iconfont">&#xe63c;</i>
+                                            </span>
+                                         </span>
+                        <div class="wx-name">考勤异常<span></span>
+                        </div>
+
+                        <div class="wx-pos"><span></span>
+
+                        </div>
+                    </li>
+
+
                 </ul>
             </div>
 

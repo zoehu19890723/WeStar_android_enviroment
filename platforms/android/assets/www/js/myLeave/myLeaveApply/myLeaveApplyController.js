@@ -20,8 +20,8 @@ define(["app"], function(app) {
         id: '2',
         name: getI18NText('sick-leave')
     }];
-    var leave_type = null;
-    var eeListPicker = null;
+    var leave_type;
+    var eeListPicker;
 
 
     var myDate = new Date();
@@ -278,6 +278,7 @@ define(["app"], function(app) {
                 '</div>' +
                 '</div>',
             cols: [{
+
                 values: (function() {
                     var arr = [];
                     $$.each(vacationType, function(index, value) {
@@ -321,9 +322,7 @@ define(["app"], function(app) {
     }
 
     function commitVacation() {
-        if (vacationType[0].id === "0") {
-            app.f7.alert(vacationType[0].name);
-        }
+
         var begin = $.trim($("#startDate").val());
         var end = $.trim($("#endDate").val());
         var begin_date = begin.split('   ')[0];
@@ -336,6 +335,10 @@ define(["app"], function(app) {
             leave_type = eeListPicker.cols[0].value;
         }
         var check = true;
+        if (check && vacationType[0].id === "0") {
+            check = false;
+            app.f7.alert(vacationType[0].name);
+        }
         if (check && !leave_type) {
             check = false;
             app.f7.alert(getI18NText('enterLeaveType'));

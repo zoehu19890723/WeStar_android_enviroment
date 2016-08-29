@@ -4,7 +4,7 @@
             <div class="title-bar">
                 <div class="select-bar">
                     <div class="address-info">
-                        <i class="WeStar_iconfont myCompany">&#xe60f;</i>
+                        <i class="WeStar_iconfont myCompany font-color-with-imp">&#xe60f;</i>
                         <div class="detail-address-info">
                             <div class="company">
                                 <div class="company-name">{{currentCompany}}</div>
@@ -13,7 +13,7 @@
                             <div class="address">{{currentAddress}}</div>
                         </div>
                     </div>
-                    <div class="date-info">
+                    <div class="date-info border-color back-color-with-1">
                         <input type="text" readonly id="date" style="width: 65px;" class="weui-input" value="" sourceValue=""/>
                         <div class="arrow-down"><i class="WeStar_iconfont">&#xe610;</i></div> 
                     </div>
@@ -28,7 +28,7 @@
             	<hr class="flow-line" width= "3">
             	{{#each record}}
             		<div class="record">
-            			<div class="record-circle status-{{hasLocation}}"></div>
+            			<div class="record-circle back-color-imp status-{{hasLocation}}"></div>
             			<div class="record-content">
         	    			<div class="record-time">{{sign_time}}</div>
         	    			<div class="record-location">
@@ -42,13 +42,13 @@
             	{{/each}}
                 {{#if showAttendanceBtn}}
                 	<div class="attendence-action-panel disable">
-                		<div class="attendence-action">
+                		<div class="attendence-action back-color-not-imp">
                 			<div class="action-text">{{text}}</div>
                 			<div class="action-time-interval">{{time}}</div>
                             <div class="action-attending">{{i18n-text 'punching'}}</div>
-                            <div class="attendance-back"></div>
+                            <div class="attendance-back linear-back"></div>
                 		</div>
-                		<a href="#" data-popup=".popup-about" class="open-popup attend-location-des">
+                		<a href="#" data-popup=".popup-about" class="open-popup attend-location-des font-color-with-6">
                 			<i class="WeStar_iconfont">&#xe60b;</i>
             				<span></span>
             			</a>

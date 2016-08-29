@@ -36,8 +36,6 @@
 .leave-item .summary .title{
     font-weight: 700;
     line-height: 32px;
-    color: #fff;
-    background-color: #ff9500;
     font-size: 14px;
     padding-left: 8px;
 }
@@ -79,13 +77,13 @@
 .out{ 
 	position:absolute; 
 	top:7px; 
-	border-color:transparent #ff9500 transparent transparent; 
+	border-color:transparent; 
 	border-style:dashed dashed solid dashed; 
 	border-width:8px; 
 } 
 .in{ 
 	position:absolute; 
-	border-color:transparent #ff9500 transparent transparent; 
+	border-color:transparent; 
 	border-style:dashed dashed solid dashed; 
 	border-width:8px; 
 	top:-8px; 
@@ -93,7 +91,7 @@
 } 
 .border{ 
 	position:relative; 
-	border:1px solid #ff9500; 
+	border:1px solid transparent; 
 	left:16px; 
 	border-radius:5px; 
 	width: 100%;
@@ -275,13 +273,12 @@
     height: 60px;
 }
 .detail-edit-content{
-    /*position: relative;*/
-    bottom: 44px;
     background-color: #f0eff5;
     margin-bottom: 44px;
 }
 .detail-edit-content.focused{
     position: relative;
+    bottom: 44px;
 }
 .photo-style{
     height:100% !important;
@@ -330,7 +327,6 @@
 .record-panel .record .record-circle{
     width: 1rem;
     height: 1rem;
-    background-color: #ff9500;
     border-radius: 50%;
 }
 
@@ -360,12 +356,10 @@
 .attendence-action-panel .attendence-action{
     width: 100px;
     height: 100px;
-    background-color: #ff9500;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: white;
     justify-content: center;
     pointer-events: auto;
     position: relative;
@@ -378,7 +372,6 @@
     top: -10px;
     left: -10px;
     z-index: -1;
-    background: -webkit-gradient(linear, 0 100%, 0 0, from(rgba(255,149,0,.6)), to(rgba(255,149,0,.2)));
 }
 
 .attendence-action-panel.disable .attendence-action{
@@ -412,7 +405,6 @@
 .attendence-action-panel .attend-location-des{
     margin-top: 16px;
     font-size: 0.8rem;
-    color: rgba(255,149,0,.6);
     pointer-events: auto;
 }
 
@@ -454,18 +446,16 @@
 
 .title-bar .date-info{
     height: 20px;
-    border: 1px solid #ff9500;
+    border: 1px solid transparent;
     border-radius: 16px;
     padding: 8px 10px 5px 10px;
     font-size: 13px;
-    background-color: rgba(255,149,0,.1);
     display: flex;
     align-items: center;
 }    
 
 .WeStar_iconfont.myCompany{
     font-size: 3rem;
-    color: #ff9500;
 }
 
 .detail-address-info .company{
@@ -512,8 +502,6 @@
     min-height: 170px;
 }
 .month-date-container{
-    background-color: #ff9500;
-    color: white;
     border-radius: 10px 10px 0px 0px;
     display: flex;
     padding: 16px;
@@ -532,7 +520,7 @@
 .summary-detail{
     flex: 1;
     padding: 24px;
-    border: 1px solid #ff9500;
+    border: 1px solid transparent;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -554,7 +542,7 @@
 .abnormal-des{
     border-bottom: 1px solid #cecece;
     font-size: 14px;
-    border-left: 4px solid #ff9500;
+    border-left: 4px solid transparent;
     padding-left: 4px;
     min-height: 20px;
 }
@@ -642,15 +630,12 @@
 .org-nav .nav-item{
     line-height: 30px;
     text-align: center;
-    background: rgba(255,149,0,.5);
-    color: white;
     border-radius: 8px;
     padding: 0px 8px 0px 8px;
 }
 
 .org-nav .nav-item.isSelf{
     background: transparent;
-    color: rgba(255,149,0,.7);
     pointer-events: none;
 }
 
@@ -658,18 +643,17 @@
     line-height: 30px;
     margin: 0px 8px 0px 8px;
     font-size: 24px;
-    color: rgba(255,149,0,.7);
 }
 .org-nav .nav-split:last-child{
     display: none;
 }
 
 .team-container.fromRight{
-    -webkit-animation : 0.5s ease fromRight;
+    -webkit-animation : 0.4s ease fromRight;
 }
 
 .team-container.fromLeft{
-    -webkit-animation : 0.5s ease fromLeft;
+    -webkit-animation : 0.4s ease fromLeft;
 }
 
 @-webkit-keyframes fromRight{
@@ -680,4 +664,59 @@
 @-webkit-keyframes fromLeft{
    from{margin-left:-100%}
    to{margin-left:0px}
+}
+
+.group-split-block{
+    border-left: 5px solid transparent;
+}
+
+.theme-custom .back-color-imp,.theme-custom .swiper-pagination-bullet-active,.theme-custom .button.active{
+    background-color: rgb(1,124,192)!important;
+    color: white!important;
+}
+
+.theme-custom .font-color-with-imp,.theme-custom i.icon,.theme-custom .tabbar a.active{
+    color : rgb(1,124,192)!important;
+}
+
+.theme-custom .button{
+    border-color: rgb(1,124,192);
+    color : rgb(1,124,192);
+}
+
+.theme-custom .back-btn{
+    color : rgb(1,124,192);
+    font-size: 28px;
+}
+
+.theme-custom .border-right-color{
+    border-right-color: rgb(1,124,192);
+}
+
+.theme-custom .border-color{
+    border-color: rgb(1,124,192);
+}
+
+.theme-custom .back-color-not-imp{
+    background-color: rgb(1,124,192);
+    color: white;
+}
+
+.theme-custom .back-color-with-1{
+    background-color: rgba(1,124,192,.1);
+}
+
+.theme-custom .font-color-with-7,.theme-custom .nav-item.isSelf.font-color-with-spec{
+    color : rgba(1,124,192,.7);
+}
+
+.theme-custom .back-color-with-5{
+    background-color: rgba(1,124,192,.5);
+    color: white;
+}
+.theme-custom .font-color-with-6{
+     color: rgba(1,124,192,.6);
+}
+.theme-custom .linear-back{
+    background: -webkit-gradient(linear, 0 100%, 0 0, from(rgba(1,124,192,.6)), to(rgba(1,124,192,.2)));
 }
