@@ -107,7 +107,7 @@ define(["app"], function(app) {
 				onDataError(data);
 			}
 		}
-		getAjaxData(url, onStarSuccess, onError);
+		getAjaxData(null, url, onStarSuccess, onError);
 	}
 
 	function enterOK_fun(event) {
@@ -166,11 +166,15 @@ define(["app"], function(app) {
 						});
 					});
 				} else {
-					app.f7.alert(data.message);
+					var message = data.message;
+                    if (parseInt(data.status) === 605) {
+                        message = getI18NText('DBError');
+                    }
+                    app.f7.alert(message);
 				}
 			}
 			var url = ess_getUrl("user/userService/resetPwdByMobile/") + "&mobile=" + mobile + "&validation=" + verifyCode + "&pwd=" + password;
-			getAjaxData(url, onStarSuccess, onError);
+			getAjaxData(null,url, onStarSuccess, onError);
 		}
 	}
 
@@ -213,11 +217,15 @@ define(["app"], function(app) {
 					}, 1000);
 				} else {
 					closeLoading();
-					app.f7.alert(data.message);
+					var message = data.message;
+                    if (parseInt(data.status) === 605) {
+                        message = getI18NText('DBError');
+                    }
+                    app.f7.alert(message);
 				}
 			}
 			var url = ess_getUrl("user/userService/sendMobileValidationCode/") + "&mobile=" + mobile;
-			getAjaxData(url, onStarSuccess, onError);
+			getAjaxData(null,url, onStarSuccess, onError);
 		}
 	}
 	function openBackPage() {

@@ -8,25 +8,25 @@ var macAddressInfo;
 function onDeviceReady() {
 	deviceInfo.model = device.model; //设备模型（如三星，华为等）
 	deviceInfo.version = device.version; //设备版本
-	localStorage.setItem('deviceUUID',device.uuid);
-    var onGPLSuccess = function(language){
-		if(localStorage.getItem("languageSet") !== "true"){
+	localStorage.setItem('deviceUUID', device.uuid);
+	var onGPLSuccess = function(language) {
+		if (localStorage.getItem("languageSet") !== "true") {
 			var new_language = 'en_us';
-			if(language !== undefined && language !== null && language.value !== undefined){
-                if(device.platform.toLowerCase() === 'ios'){
-                    if(language.value.indexOf('zh-Hans-') > -1){
-                        new_language = 'zh_cn';
-                    }else if(language.value.indexOf('zh-Hant-') > -1){
-                        new_language = 'zh_tw'
-                    }else{
-                        new_language = 'en_us';
-                    }
-                }else{
-                  
-                   new_language = (language.value).toLowerCase().replace("-", "_");
-                }
-				
-				if(new_language !== 'en_us' && new_language !== 'zh_cn' &&  new_language !== 'zh_tw'){
+			if (language !== undefined && language !== null && language.value !== undefined) {
+				if (device.platform.toLowerCase() === 'ios') {
+					if (language.value.indexOf('zh-Hans-') > -1) {
+						new_language = 'zh_cn';
+					} else if (language.value.indexOf('zh-Hant-') > -1) {
+						new_language = 'zh_tw'
+					} else {
+						new_language = 'en_us';
+					}
+				} else {
+
+					new_language = (language.value).toLowerCase().replace("-", "_");
+				}
+
+				if (new_language !== 'en_us' && new_language !== 'zh_cn' && new_language !== 'zh_tw') {
 					new_language = 'en_us';
 				}
 			}
@@ -34,11 +34,11 @@ function onDeviceReady() {
 		}
 	}
 
-	var onGPLFailure = function(){
+	var onGPLFailure = function() {
 		localStorage.setItem("language", 'en_us');
 	}
 	navigator.globalization.getPreferredLanguage(onGPLSuccess, onGPLFailure);
-	
+
 	window.MacAddress.getMacAddress(
 		function(macAddress) {
 			macAddressInfo = macAddress;
@@ -73,16 +73,16 @@ var ess_GeoToastHtml = '<div id="ess_geoToast" class="weui_loading_toast"> <div 
 
 function showLoading() {
 	var loading_text = getI18NText('DataLoading');
-	ess_loadingToastHtml = ess_loadingToastHtml.replace('{{spacial-string}}',loading_text);
+	var newToastHtml = ess_loadingToastHtml.replace('{{spacial-string}}', loading_text);
 	if (!isLoadingExist()) {
-		$("#index_view .pages").append(ess_loadingToastHtml);
+		$("#index_view .pages").append(newToastHtml);
 	}
 }
 
 function showLoadingLogin() {
 	var loading_text = getI18NText('DataLoading');
-	ess_loadingToastHtml = ess_loadingToastHtml.replace('{{spacial-string}}',loading_text);
-	$("#index_view").append(ess_loadingToastHtml);
+	var newToastHtml = ess_loadingToastHtml.replace('{{spacial-string}}', loading_text);
+	$("#index_view").append(newToastHtml);
 }
 
 function closeLoading() {
@@ -99,21 +99,13 @@ function isLoadingExist() {
 
 function showGeoLoading() {
 	var loading_text = getI18NText('GeoLoading');
-	ess_GeoToastHtml = ess_GeoToastHtml.replace('{{spacial-string}}',loading_text);
-	$("#index_view .pages").append(ess_GeoToastHtml);
+	var newToastHtml = ess_GeoToastHtml.replace('{{spacial-string}}', loading_text);
+	$("#index_view .pages").append(newToastHtml);
 }
 
 function closeGeoLoading() {
 	$("#ess_geoToast").remove();
 }
-
-
-function showToast(s) {
-	var toast = '<div id="toast"><div class="weui_mask_transparent"></div><div class="weui_toast" style="z-index: 9999"><i class="weui_icon_toast"></i><p class="weui_toast_content">' + s + '</p> </div> </div>'
-	$("#index_view").append(toast);
-	setTimeout('$("#toast").remove()', 5000);
-}
-
 
 function getRandomNumber() {
 	var timestamp = (new Date()).valueOf();
@@ -182,6 +174,7 @@ function weixin_hideToolBar() {
 		$(".tabbar-labels").hide();
 	}
 }
+
 function textEdit(e) {
 	var val_ = $.trim($(this).val());
 	if ("" != val_) {
@@ -244,15 +237,12 @@ var storeWithExpiration = {
  * @param  {Function} onError   called when ajax failed
  * @param  {Object} data      paramaters of ajax request
  */
-function getAjaxData(url, onSuccess, onError, data) {
+function getAjaxData(module, url, onSuccess, onError, data) {
 	var data = data || null;
 	var onSuccessCallBack = function(data) {
 		if (data.status === 500) { //session time out
-			var app = require('app');
-			app.f7.alert(getI18NText('session-overtime'), function() {
-				app.router.load('first_slider');
-			})
-		} else {
+			DealSessionOut(module);
+		}else {
 			if (onSuccess !== undefined && typeof onSuccess === "function") {
 				onSuccess(data);
 			}
@@ -271,6 +261,61 @@ function getAjaxData(url, onSuccess, onError, data) {
 		error: onError
 	});
 };
+
+function DealSessionOut(module) {
+	var userName = localStorage.getItem("userName");
+	var passWord = localStorage.getItem("passWord");
+	if (userName && userName != "" && userName != "null" && passWord && passWord != "" && passWord != "null") {
+    		showLoading();
+        var language = translateLanguage();
+        var app = require('app');
+        var url = ess_getUrl("user/userService/loginByMobile/") + "&username=" + userName + "&password=" + passWord +"&language=" + language;
+        var onStarSuccess = function(data) { //1:success;0:pwd error;-1:user not exist
+            closeLoading();
+            if (parseInt(data.status) === 1) {
+                setLocalStorage({
+                	'sessionid': data.data.session_id || ''
+                });
+                app.mainView.router.refreshPage();
+            }  else {
+                app.f7.alert(data.message, function() {
+                    app.router.load('login');
+                });
+            }
+        }
+        var onError = function(e) {
+            closeLoading();
+            app.f7.alert(getI18NText('network-error'), function() {
+                app.router.load('login');
+            });
+            
+        }
+        getAjaxData(null , url, onStarSuccess, onError, null , false);
+    }else{
+    	app.router.load('login');
+    }
+}
+
+ function translateLanguage(language){
+ 	if(language === undefined){
+ 		language = localStorage.getItem('language') || 'en_us';
+ 	}
+    var new_language = 'english';
+    switch(language){
+        case 'zh_cn' : {
+            new_language = 'chinese';
+            break;
+        }
+        case 'zh_tw' : {
+            new_language = 'big5';
+            break;
+        }
+        default : new_language = 'english';
+    }
+
+    return new_language;
+ }
+
 /**
  * post ajax data
  * @param  {String} url       ajax address
@@ -314,7 +359,7 @@ function setLocalStorage(object) {
  * register basic user info card for common use
  */
 function registerCardTemplete() {
-	var templete = '<div class="card">' + '<div class="wx-group">' + '<ul class="wx-person">' + '<li class="wx-item">' + '<div class="wx-time" ><span></span></div>' + '<span class="wx-icon edit-head-photo"> {{#if card.photo}}  <img src="{{card.photo}}" onerror = "javascript:this.src=\'./img/default.jpg\';" style="height: 100%!important;width: 100%;"/>' + '{{else}}<i class="cdp-icon-touxiang"></i> {{/if}}</span>' + '<div class="wx-name">{{card.name}}</div>' + '<span class="wx-pos back-color-imp">{{#if card.post}} {{card.post}} {{else}} 未知 {{/if}}</span>' + '{{#if card.name_editable}}' + '<div class="wx-time " ></div>' + '{{/if}}' + '<div class="wx-content" >{{card.action}}</div>' + '</li>' + '</ul>' + '</div>' + '</div>';
+	var templete = '<div class="card">' + '<div class="wx-group">' + '<ul class="wx-person">' + '<li class="wx-item">' + '<div class="wx-time" ><span></span></div>' + '<span class="wx-icon edit-head-photo cut-img"> {{#if card.photo}}  <img src="{{card.photo}}" onerror = "javascript:this.src=\'./img/default.jpg\';" onload="AutoResizeImage(60,this)"/>' + '{{else}}<i class="cdp-icon-touxiang"></i> {{/if}}</span>' + '<div class="wx-name">{{card.name}}</div>' + '<span class="wx-pos back-color-imp">{{#if card.post}} {{card.post}} {{else}} {{i18n-text "unknown"}} {{/if}}</span>' + '{{#if card.name_editable}}' + '<div class="wx-time " ></div>' + '{{/if}}' + '<div class="wx-content" >{{card.action}}</div>' + '</li>' + '</ul>' + '</div>' + '</div>';
 
 	Handlebars.registerPartial('userInfoCard', templete);
 }
@@ -322,7 +367,7 @@ function registerCardTemplete() {
  * register basic apply info card (include my-leave and my-overtime)for common use
  */
 function registerApplyInfoCardTemplete() {
-	var temp = '<div class="leave-item-time">{{updateTime}}</div>' + '<div class="leave-item">' + '<div class = "status-img"><img style="width:100%;height:100%" src="{{userInfo.image}}" onerror="javascript:this.src=\'./img/default.jpg\';"></div>' + '<div class="b_main">' + '<div class="border border-color">' + '<div class = "summary">' + '<div class = "title back-color-imp">' + '<span>{{title}}</span>' + '</div>' + '<div class = "contentTitle">' + '<span>{{status.title}}:</span>' + '<span class = "value">{{status.value}}</span>' + '</div>' + '{{#each general}}' + '<div class = "content">' + '<span>{{title}}:</span>' + '<span class = "value">{{value}}</span>' + '</div>' + '{{/each}}' + '<div class="link-page" topage = {{id}} name={{userInfo.name}}>' + '<span class="click-detail">{{i18n-text "see-detail"}}</span>' + '<i class="WeSpark_iconfont ">&#xe604;</i>' + '</div>' + '</div>' + '</div>' + '<div class="out border-right-color">' + '<div class="in border-right-color"></div>' + '</div>' + '</div>' + '</div>';
+	var temp = '<div class="leave-item-time">{{updateTime}}</div>' + '<div class="leave-item">' + '<div class = "status-img cut-img"><img  onload="AutoResizeImage(40,this)"src="{{userInfo.image}}" onerror="javascript:this.src=\'./img/default.jpg\';"></div>' + '<div class="b_main">' + '<div class="border border-color">' + '<div class = "summary">' + '<div class = "title back-color-imp">' + '<span>{{title}}</span>' + '</div>' + '<div class = "contentTitle">' + '<span>{{status.title}}:</span>' + '<span class = "value">{{status.value}}</span>' + '</div>' + '{{#each general}}' + '<div class = "content">' + '<span>{{title}}:</span>' + '<span class = "value">{{value}}</span>' + '</div>' + '{{/each}}' + '<div class="link-page" topage = {{id}} name={{userInfo.name}}>' + '<span class="click-detail">{{i18n-text "see-detail"}}</span>' + '<i class="WeSpark_iconfont ">&#xe604;</i>' + '</div>' + '</div>' + '</div>' + '<div class="out border-right-color">' + '<div class="in border-right-color"></div>' + '</div>' + '</div>' + '</div>';
 
 	Handlebars.registerPartial('applyInfoCard', temp);
 }
@@ -386,31 +431,31 @@ function registerCompareFunction() {
 	});
 }
 
-function getI18NText(text){
+function getI18NText(text) {
 	var app = require('app');
 	var language = localStorage.getItem('language') || 'en_us';
-	
-	if(language === undefined || language === "null" || app.locale[language] === undefined){
-		localStorage.setItem('language','en_us');
+
+	if (language === undefined || language === "null" || app.locale[language] === undefined) {
+		localStorage.setItem('language', 'en_us');
 		language = 'en_us';
 	}
 	var res = (app.locale[language])[text];
-	if(res === undefined){
+	if (res === undefined) {
 		res = text;
 	}
 	return res;
 }
 
-function transformI18NForHtml(){
+function transformI18NForHtml() {
 	var ele = $('[i18n-text]');
 
-	ele.forEach(function(item){
+	ele.forEach(function(item) {
 		var text = item.getAttribute('i18n-text');
 		item.innerText = getI18NText(text);
 	})
 }
 
-function registerI18NHelper(){
+function registerI18NHelper() {
 	Handlebars.registerHelper('i18n-text', function(text) {
 		if (arguments.length < 1) {
 			throw new Error('Handlerbars Helper "I18N" needs 1 parameters');
@@ -475,7 +520,7 @@ function dealImage(array, withoutInfo) {
 /**
  * render hbs files
  * @param  {object} renderObject 	 basic render paramaters contains : selector,hbsUrl,model,bindings
- *                                   event operation functions contains : berforeRender,afterRender(after render and before binding),afterBinding
+ *                                   event operation functions contains : beforeRender,afterRender(after render and before binding),afterBinding
  */
 function viewRender(renderObject) {
 	var selector = renderObject.selector;
@@ -505,15 +550,15 @@ function viewRender(renderObject) {
 
 	require(["app", hbsModule], function(app, viewTemplate) {
 
-		if (isFnc('berforeRender')) {
-			renderObject.berforeRender.call();
+		if (isFnc('beforeRender')) {
+			renderObject.beforeRender.call();
 		}
 		var templete = viewTemplate(model);
-		if(selector !== undefined && selector !== null){
+		if (selector !== undefined && selector !== null) {
 			selector.html(templete);
 		}
 		if (isFnc('afterRender')) {
-			renderObject.afterRender.call(this,templete);
+			renderObject.afterRender.call(this, templete);
 		}
 		bindEvents(bindings);
 
@@ -523,18 +568,39 @@ function viewRender(renderObject) {
 	})
 }
 //format date
-Date.prototype.Format = function (fmt) {
-    var o = {
-        "M+": this.getMonth() + 1, //月份 
-        "d+": this.getDate(), //日 
-        "h+": this.getHours(), //小时 
-        "m+": this.getMinutes(), //分 
-        "s+": this.getSeconds(), //秒 
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-        "S": this.getMilliseconds() //毫秒 
-    };
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
+Date.prototype.Format = function(fmt) {
+	var o = {
+		"M+": this.getMonth() + 1, //月份 
+		"d+": this.getDate(), //日 
+		"h+": this.getHours(), //小时 
+		"m+": this.getMinutes(), //分 
+		"s+": this.getSeconds(), //秒 
+		"q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+		"S": this.getMilliseconds() //毫秒 
+	};
+	if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+	for (var k in o)
+		if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+	return fmt;
+}
+
+function AutoResizeImage(maxSize,objImg) {
+	var img = new Image();
+	img.src = objImg.src;
+	var hRatio;
+	var wRatio;
+	var Ratio = 1;
+	var w = img.width;
+	var h = img.height;
+	wRatio = maxSize / w;
+	hRatio = maxSize / h;
+	if (wRatio < 1 || hRatio < 1) {
+		Ratio = (wRatio > hRatio ? wRatio : hRatio);
+	}
+	if (Ratio < 1) {
+		w = w * Ratio;
+		h = h * Ratio;
+	}
+	objImg.height = h;
+	objImg.width = w;
 }

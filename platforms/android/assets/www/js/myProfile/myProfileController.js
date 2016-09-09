@@ -154,9 +154,9 @@ define(["app"], function(app) {
         }, {
             code: 'myTeam',
             title: getI18NText('my-team')
-        }, {
-            code: 'moreFunc',
-            title: ''
+        // }, {
+        //     code: 'moreFunc',
+        //     title: ''
         }]
         return menu_info;
     }

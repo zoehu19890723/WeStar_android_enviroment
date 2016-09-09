@@ -4,11 +4,11 @@
  */
 define(["app"], function(app) {
 
-    var bindings = [{
-        element: '.pull-to-refresh-content',
-        event: 'refresh',
-        handler: refreshContent
-    }];
+    var bindings = [];
+
+    var module = {
+        html : 'weStarSalary/weStarSalary.html'
+    }
 
     /**
      * init controller 
@@ -24,7 +24,7 @@ define(["app"], function(app) {
         var onSuccess = function(data) {
             closeLoading();
 
-            if (data.status == 1) {
+            if (parseInt(data.status) === 1) {
                 var pla_wage = {
                     isNull: false
                 };
@@ -54,18 +54,14 @@ define(["app"], function(app) {
                 renderView(pla_wage);
 
             } else {
-                var isWeixin = localStorage.getItem("isWeixin");
-
-                if (data.message === null || data.message === "") {
-                    data.message = getI18NText('reGet-salary');
+                var message = data.message;
+                if (message === null || message === "") {
+                    message = getI18NText('reGet-salary');
                 }
-                if (isWeixin && "1" == isWeixin) {
-                    app.f7.alert(data.message, function() {
-                        wx.closeWindow();
-                    });
-                } else {
-                    app.f7.alert(data.message);
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
                 }
+                app.f7.alert(message);
             }
         };
 
@@ -75,9 +71,7 @@ define(["app"], function(app) {
          */
         var onError = function(e) {
             closeLoading();
-            app.f7.alert(getI18NText('network-error'), function() {
-                app.f7.initPullToRefresh($(".pull-to-refresh-content"));
-            });
+            app.f7.alert(getI18NText('network-error'));
         }
 
         /**
@@ -85,15 +79,19 @@ define(["app"], function(app) {
          * @param {Object} data , return data form service
          */
         var onRestDataSuccess = function(data) {
-            if (data.status && data.status === 1 && data.data) {
+            if (data.status && parseInt(data.status) === 1 && data.data) {
                 storeWithExpiration.set('mySalary', data.data);
             } else {
-                app.f7.alert(data.message);
+                var message = data.message;
+                if(parseInt(data.status) === 605){
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message);
             }
         }
 
         if (!storeWithExpiration.get("mySalary")) {
-            getAjaxData(ess_getUrl("payroll/PayrollConfigWebService/getEmployeePayslip/"), onSuccess, onError);
+            getAjaxData(module,ess_getUrl("payroll/PayrollConfigWebService/getEmployeePayslip/"), onSuccess, onError);
         } else {
             var data = {
                 data: storeWithExpiration.get("mySalary"),
@@ -101,7 +99,7 @@ define(["app"], function(app) {
             }
             onSuccess(data);
 
-            getAjaxData(ess_getUrl("payroll/PayrollConfigWebService/getEmployeePayslip/"), onRestDataSuccess, onError);
+            getAjaxData(module,ess_getUrl("payroll/PayrollConfigWebService/getEmployeePayslip/"), onRestDataSuccess, onError);
         }
     }
 
@@ -120,7 +118,6 @@ define(["app"], function(app) {
                 $("#mySalary-calender").css("padding-left", padd);
             }
             checkListItems();
-            app.f7.initPullToRefresh($(".pull-to-refresh-content"));
         }
         var renderObject = {
             selector: $('.mySalary'),
@@ -132,10 +129,6 @@ define(["app"], function(app) {
         viewRender(renderObject);
     }
 
-    function refreshContent() {
-        storeWithExpiration.remove('mySalary');
-        init(true);
-    }
     /**
      * Init salary calendar picker
      * @param {Array} ess_mySalary_month ,it is an array with different object of {date : XXX ,id : XXX}

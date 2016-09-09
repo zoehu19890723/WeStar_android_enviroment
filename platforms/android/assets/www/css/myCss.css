@@ -117,7 +117,7 @@
 .user-image{
     width: 60px;
     height: 60px;
-    border-radius: 30px;
+    border-radius: 50%;
     overflow: hidden;
 }
 
@@ -141,10 +141,13 @@
 .approve-flow-card .one-item{
     margin:16px;
 }
-
+.apply-descrition .apply-item{
+    display: flex;
+}
 .apply-descrition .apply-item span.value{
     font-weight: bold;
     color: black;
+    flex : 1;
 }
 
 .approve-flow-card .one-item .border{
@@ -159,10 +162,6 @@
 
 .approve-flow-card .one-item .in{
     border-color:transparent #fff transparent transparent;
-}
-
-.approve-flow-card .one-item .status-img{
-   font-size:18px;
 }
 
 .approve-flow-card .one-item .user-image{
@@ -180,12 +179,13 @@
 .approve-flow-card .one-item .user-info-time{
     text-align: end;
     font-size: 8px;
+    min-height: 16px;
 }
 
 .flow-line{
     position: absolute;
     top: -17px;
-    left: 24px;
+    left: 26px;
     z-index: -1;
     color: #cecece;
     opacity: 0.7;
@@ -225,6 +225,15 @@
     border: 2px solid #cecece;
 }
 
+.step-no{
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    font-size: 14px;
+    border-radius: 50%;
+    border: 1px solid #cecece;
+    text-align: center;
+}
 .ajustItemInner{
     height: auto!important;
     flex-direction: column;
@@ -287,7 +296,6 @@
 .wx-person > .wx-item .wx-icon{
     width: 60px;
     height: 60px;
-    line-height: 60px;
 }
 
 .marker {
@@ -328,10 +336,11 @@
     width: 1rem;
     height: 1rem;
     border-radius: 50%;
+    background-color: #cfcfcf;
 }
 
-.record-panel .record .record-circle.status-true{
-    background-color: #cfcfcf;
+.record-panel .record .record-circle.status-{
+    background-color: rgb(1,124,192)!important;
 }
 
 .record-panel .record .record-content{
@@ -429,6 +438,7 @@
     margin: 8px 8px 0px 8px;
     display: flex;
     flex-direction: column;
+    min-height: 67px;
 }
 
 .title-bar .select-bar{
@@ -603,12 +613,8 @@
     
 }
 .team-item-card .self-photo{
-    padding: 0px 16px 8px 8px;
-}
-.team-item-card .self-photo img{
-    height: 60px;
     width: 60px;
-    border-radius: 50%;
+    height:60px;
 }
 .team-item-card .self-text-info{
     flex: 1;
@@ -619,6 +625,7 @@
     padding-top: 8px;
     display: flex;
     justify-content: space-between;
+    margin-top: 8px;
 }
 
 .org-nav{
@@ -668,6 +675,57 @@
 
 .group-split-block{
     border-left: 5px solid transparent;
+}
+
+.toast_mask{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+}
+
+.toast_content{
+    min-width: 10em;
+    max-width: 100%;
+    line-height: 5rem;
+    background: rgba(40,40,40,0.75);
+    text-align: center;
+    border-radius: 5px;
+    color: #FFFFFF;
+    padding: 0 8px;
+}
+
+.b_main .border .user-info:nth-last-of-type(n+2){
+    border-bottom: 1px solid #cecece;
+    padding: 4px 0;
+}
+
+.version-panel{
+    text-align: center;
+    padding-top: 64px;
+    font-weight: bold;
+}
+
+.tab-page-content{
+    background-color: #F0EFF5;
+}
+
+.tabs-animated-wrap.tab-content{
+   height: calc(100% - 39px);
+   height: -webkit-calc(100% - 39px);
+   height: -moz-calc(100% - 39px);
+}
+.tab-content .content-block{
+    margin: 0px;
+    padding: 0px;
+}
+.cut-img{
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.wx-person > .wx-item .wx-icon img,.wx-contacts>.wx-item .wx-icon img {
+    border-radius: 0;
 }
 
 .theme-custom .back-color-imp,.theme-custom .swiper-pagination-bullet-active,.theme-custom .button.active{
@@ -720,3 +778,54 @@
 .theme-custom .linear-back{
     background: -webkit-gradient(linear, 0 100%, 0 0, from(rgba(1,124,192,.6)), to(rgba(1,124,192,.2)));
 }
+
+.my-contact-list .wx-title {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    color: #888888;
+    background: #ebebeb;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 0;
+    margin-top: 3px;
+    border-bottom: 1px solid #cecece;
+}
+.my-contact-list .wx-item{
+    padding: 7px 0;
+    margin: 0 7px;
+    border-top: 1px solid #cecece;
+}
+.my-contact-list .wx-item .wx-icon {
+    width: 36px;
+    height:36px;
+    line-height: 36px;
+    border-radius: 50%;
+    color: #CCC;
+    font-size: 10px;
+    float: left;
+    margin-right: 15px;
+}
+
+.my-contact-list .wx-name{
+  font-size: 16px;
+  color: #424242;
+}
+
+.wx-group .wx-title + .wx-item{
+    border-top-width: 0px;
+}
+
+.moreFunc-text{
+    padding: 16px;
+    line-height: 100px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(lightblue), to(black));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+

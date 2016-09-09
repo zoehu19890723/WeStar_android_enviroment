@@ -8,21 +8,28 @@ define(["app"], function(app) {
         { element: '.we-star-person', event: 'click', handler: openNewPage } ,
         // { element: '.edit-head-photo', event: 'click', handler: openPhotoPage },
     ];
-    var query_;
     /**
      * init controller
      */
     function init(param){
         var id = '';
+        var name = getI18NText('my');
         if(param.id !== undefined){
             id = param.id;
+        }
+        if(param.name !== undefined){
+            name = param.name + getI18NText('prep');
+        }
+
+        var beforeRender = function(){
+            $(".myprofile-summary").text(name+getI18NText('StarProfile'));
         }
         var renderObject = {
             selector : $('.person-summary'),
             hbsUrl : "js/weStarPerson/summary/summary",
             model : {},
             bindings : bindings,
-            beforeRender : weixin_hideBackButton
+            beforeRender : beforeRender
         }
         setPersonalProfile(renderObject,id);
     }
@@ -64,10 +71,14 @@ define(["app"], function(app) {
                 model_.detailArray = detailArray;
                 model_.card=data.data.profile;
             }else{
+                var message = data.message;
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
                 if(id !== undefined && id !== ''){
-                    app.f7.alert(data.message);
+                    app.f7.alert(message);
                 }else{
-                    app.f7.alert(data.message, function(){
+                    app.f7.alert(message, function(){
                         app.mainView.router.load({url:"index.html"});
                     });
                 }
@@ -98,31 +109,42 @@ define(["app"], function(app) {
                 }
                 storeWithExpiration.set('ee_person',data.data)
             }else{
-                app.f7.alert(data.message, function(){
+                var message = data.message;
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message, function(){
                     app.mainView.router.load({url:"index.html"});
                 });
             }
         }
 
         var url = ess_getUrl("humanresource/HumanResourceWebsvcService/getEmployeeProfile/");
+        var module = {
+            html : 'weStarPerson/summary/summary.html',
+        }
         if(id !== undefined && id !== ''){
+            showLoading();
             var data = {
                 "argsJson": JSON.stringify({
-                    "id": id
+                    "id": parseInt(id)
                 })
             }
-            getAjaxData(url , onSuccess, onError, data);
+            module.param ={
+                id : id
+            }
+            getAjaxData(module,url , onSuccess, onError, data);
         }else{
             if(!storeWithExpiration.get("ee_person") ){
                 showLoading();
-                getAjaxData(url , onSuccess, onError);
+                getAjaxData(module,url , onSuccess, onError);
             }else{
                 var data = {
                     status :  1,
                     data : storeWithExpiration.get("ee_person")
                 }
                 onSuccess(data);
-                getAjaxData(url,onRestData, onError);
+                getAjaxData(module,url,onRestData, onError);
             }
         }
     }

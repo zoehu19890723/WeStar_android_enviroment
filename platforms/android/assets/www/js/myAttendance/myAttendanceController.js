@@ -24,6 +24,10 @@ define(["app"], function(app) {
     //second count interval
     var interval = null;
 
+    var module = {
+        html: 'myAttendance/myAttendance.html'
+    }
+
     /**
      * init this controller when load this view
      */
@@ -42,7 +46,7 @@ define(["app"], function(app) {
             showLoading();
             var url = ess_getUrl("attendance/SignInService/GetCompanyGeoInfo/");
             var onSuccess = function(data) {
-                if (data.status === 1) {
+                if (parseInt(data.status) === 1) {
                     store.set('allCmpInfo', data.data);
                     var activeCmp = {};
                     if (data.data.length === 1) {
@@ -70,7 +74,11 @@ define(["app"], function(app) {
                         getrecord(showview);
                     }
                 } else {
-                    app.f7.alert(data.message, function() {
+                    var message = data.message;
+                    if (parseInt(data.status) === 605) {
+                        message = getI18NText('DBError');
+                    }
+                    app.f7.alert(message, function() {
                         app.mainView.router.back();
                     });
                 }
@@ -81,7 +89,7 @@ define(["app"], function(app) {
                     app.mainView.router.back();
                 });
             }
-            getAjaxData(url, onSuccess, onError);
+            getAjaxData(module, url, onSuccess, onError);
         } else {
             getrecord(showview);
         }
@@ -99,16 +107,20 @@ define(["app"], function(app) {
         store.set('currentRecordsDate', getFormatDate());
         if (!store.get('myAttendanceRecords')) {
             var onSuccess = function(data) {
-                if (data.status === 1) {
+                if (parseInt(data.status) === 1) {
                     var records = data.data.records;
                     records.forEach(function(item) {
-                        item.sign_time =getI18NText('punching-time') + item.sign_time;
+                        item.sign_time = getI18NText('punching-time') + item.sign_time;
                         item.hasLocation = true;
                     });
                     var new_records = records.concat(basicRecord);
                     store.set('myAttendanceRecords', new_records);
                 } else {
-                    app.f7.alert(data.message, function() {
+                    var message = data.message;
+                    if (parseInt(data.status) === 605) {
+                        message = getI18NText('DBError');
+                    }
+                    app.f7.alert(message, function() {
                         store.set('myAttendanceRecords', basicRecord);
                     });
                 }
@@ -127,7 +139,7 @@ define(["app"], function(app) {
                     'signinDate': getFormatDate()
                 })
             }
-            getAjaxData(url, onSuccess, onError, paramObj);
+            getAjaxData(module, url, onSuccess, onError, paramObj);
         } else {
             showview();
         }
@@ -145,7 +157,7 @@ define(["app"], function(app) {
         var attendanceStatus = 5;
         store.set('currentRecordsDate', dateStr);
         var onSuccess = function(data) {
-            if (data.status === 1) {
+            if (parseInt(data.status) === 1) {
                 var records = data.data.records;
                 records.forEach(function(item) {
                     item.sign_time = getI18NText('punching-time') + item.sign_time;
@@ -155,7 +167,11 @@ define(["app"], function(app) {
                 attendanceStatus = data.data.attendanceStatus || 0;
                 showView(new_records, formatRecordStatus(attendanceStatus));
             } else {
-                app.f7.alert(data.message, function() {
+                var message = data.message;
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message, function() {
                     showView(basicRecord, formatRecordStatus(attendanceStatus));
                 });
             }
@@ -171,7 +187,7 @@ define(["app"], function(app) {
                 'signinDate': dateStr
             })
         }
-        getAjaxData(url, onSuccess, onError, paramObj);
+        getAjaxData(module, url, onSuccess, onError, paramObj);
     }
 
     /**
@@ -349,7 +365,7 @@ define(["app"], function(app) {
                 {
                     object = {
                         statusCode: 0,
-                        statusText:  getI18NText('early-leave')
+                        statusText: getI18NText('early-leave')
                     }
                     break;
                 }
@@ -357,7 +373,7 @@ define(["app"], function(app) {
                 {
                     object = {
                         statusCode: 1,
-                        statusText:getI18NText('overtime')
+                        statusText: getI18NText('overtime')
                     }
                     break;
                 }
@@ -373,7 +389,7 @@ define(["app"], function(app) {
                 {
                     object = {
                         statusCode: 0,
-                        statusText:getI18NText('absence')
+                        statusText: getI18NText('absence')
                     }
                     break;
                 }
@@ -389,7 +405,7 @@ define(["app"], function(app) {
      */
     function backToMain() {
         clearInterval(interval);
-        navigator.geolocation.clearWatch(watchID);　　
+        clearInterval(watchID);　　
         app.mainView.router.back();
     }
 
@@ -402,6 +418,7 @@ define(["app"], function(app) {
         var icon = $('.company .arrow-down');
         var dateIcon = $('.date-info .arrow-down')
         var currentDate = store.get('currentRecordsDate').split('-');
+        var nowDate = new Date();
         var cmpPicker = app.f7.picker({
             input: '.company-name',
             toolbarTemplate: '<div class="toolbar">' +
@@ -487,7 +504,7 @@ define(["app"], function(app) {
                 textAlign: 'left',
                 values: (function() {
                     var arr = [];
-                    for (var i = parseInt(currentDate[0]) - 3; i <= parseInt(currentDate[0]); i++) {
+                    for (var i = nowDate.getFullYear() - 3; i <= nowDate.getFullYear(); i++) {
                         arr.push(i);
                     }
                     return arr;
@@ -548,7 +565,7 @@ define(["app"], function(app) {
 
         var onSuccess = function(data) {
             $('.attendence-action-panel').removeClass('attending');
-            if (data.status === 1) {
+            if (parseInt(data.status) === 1) {
                 var records = store.get('myAttendanceRecords');
                 var onlyTime = time.split(' ')[1] || '';
                 var record = {
@@ -564,7 +581,11 @@ define(["app"], function(app) {
                 setTimeLine();
                 $('.attendence-action-panel')[0].scrollIntoView();
             } else {
-                app.f7.alert(data.message);
+                var message = data.message;
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message);
             }
         }
 
@@ -586,7 +607,10 @@ define(["app"], function(app) {
                     'equipment_serial_number': localStorage.getItem('deviceUUID')
                 })
             }
-            getAjaxData(url, onSuccess, onError, attendanceObj);
+            var ST1 = setTimeout(function() {
+                getAjaxData(module, url, onSuccess, onError, attendanceObj);
+                clearTimeout(ST1);
+            }, 1000);
         });
     }
     /**
@@ -595,11 +619,15 @@ define(["app"], function(app) {
     function showSummaryTab() {
         showLoading();
         var onSuccess = function(data) {
-            if (data.status === 1) {
+            if (parseInt(data.status) === 1) {
                 store.set('myAttendanceMonth', data.data);
                 refreshSummary();
             } else {
-                app.f7.alert(data.message, function() {
+                var message = data.message;
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message, function() {
                     refreshSummary();
                 });
             }
@@ -610,26 +638,26 @@ define(["app"], function(app) {
             });
         }
 
-        var compareMonth = function(){
+        var compareMonth = function() {
             var monthArr = store.get('myAttendanceMonth');
-            if(monthArr === undefined || monthArr === null || monthArr.length === 0){
+            if (monthArr === undefined || monthArr === null || monthArr.length === 0) {
                 return true;
-            }else{
-                var lastMonth = monthArr[monthArr.length-1];
-                var nowDate = new Date(); 
+            } else {
+                var lastMonth = monthArr[monthArr.length - 1];
+                var nowDate = new Date();
                 var year = parseInt((lastMonth.split('-'))[0]);
                 var month = parseInt((lastMonth.split('-'))[1]);
-                if(year < nowDate.getFullYear() || (year === nowDate.getFullYear() && month < nowDate.getMonth())){
+                if (year < nowDate.getFullYear() || (year === nowDate.getFullYear() && month < nowDate.getMonth())) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
             }
         }
-        if(store.get('myAttendanceMonth') === undefined ||  store.set('myAttendanceMonth') === null || compareMonth() === true){
+        if (store.get('myAttendanceMonth') === undefined || store.set('myAttendanceMonth') === null || compareMonth() === true) {
             var url = ess_getUrl("attendance/SignInService/getMyAttendanceYearMonth/");
-            getAjaxData(url, onSuccess, onError);
-        }else{
+            getAjaxData(module, url, onSuccess, onError);
+        } else {
             refreshSummary();
         }
     }
@@ -640,7 +668,7 @@ define(["app"], function(app) {
     function refreshSummary(monthStr) {
         var model = null;
         var onSuccess = function(data) {
-            if (data.status === 1) {
+            if (parseInt(data.status) === 1) {
                 var abnormalRecord = data.data;
                 var hasAbnormal = (abnormalRecord.length > 0) ? true : false;
                 abnormalRecord.forEach(function(item) {
@@ -664,12 +692,16 @@ define(["app"], function(app) {
                     absenceDays: absenceDays
                 }
                 model = {
-                    isNull : false,
+                    isNull: false,
                     summaryData: summaryObj
                 }
 
             } else {
-                app.f7.alert(data.message);
+                var message = data.message;
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message);
             }
             renderTab2(model);
         }
@@ -679,7 +711,7 @@ define(["app"], function(app) {
             app.f7.alert(getI18NText('network-error'));
         }
 
-        var renderTab2 = function(model){
+        var renderTab2 = function(model) {
             closeLoading();
             var renderObject = {
                 selector: $('#tab2'),
@@ -687,27 +719,29 @@ define(["app"], function(app) {
                 model: model,
                 bindings: []
             };
-            if(model.isNull !== true){
+            if (model.isNull !== true) {
                 renderObject.afterRender = initSummaryDatePicker;
             }
             viewRender(renderObject);
         }
 
         var monthArr = store.get('myAttendanceMonth');
-        if(monthArr === undefined || monthArr === null || monthArr.length === 0){
-            renderTab2({isNull : true});
-        }else{
-            if(monthStr === undefined){
-                monthStr = monthArr[monthArr.length-1];
+        if (monthArr === undefined || monthArr === null || monthArr.length === 0) {
+            renderTab2({
+                isNull: true
+            });
+        } else {
+            if (monthStr === undefined) {
+                monthStr = monthArr[monthArr.length - 1];
             }
-            store.set('currentSummaryMonth',monthStr);
+            store.set('currentSummaryMonth', monthStr);
             var url = ess_getUrl("attendance/SignInService/getMyAttendanceSummary/");
             var paramObj = {
                 "argsJson": JSON.stringify({
                     'month': monthStr
                 })
             }
-            getAjaxData(url, onSuccess, onError, paramObj);
+            getAjaxData(module, url, onSuccess, onError, paramObj);
         }
     }
     /**
@@ -748,7 +782,7 @@ define(["app"], function(app) {
                     icon.removeClass('up');
                 }
                 var monthStr = p.cols[0].value;
-                if(monthStr !== store.get('currentSummaryMonth')){
+                if (monthStr !== store.get('currentSummaryMonth')) {
                     showLoading();
                     refreshSummary(monthStr);
                 }
@@ -773,12 +807,13 @@ var map = null,
  * caculate current postion after baidu map loaded
  */
 function caculatePostion() {
-    $('.attend-location-des span').text(getI18NText('locating'));
-    watchID = navigator.geolocation.watchPosition(onSuccess, onError, {
-        enableHighAccuracy: true,
-        maximumAge: 3000,
-        timeout: 5000
-    });
+    watchID = setInterval(function(){
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+            enableHighAccuracy: true,
+            maximumAge: 3000,
+            timeout: 3000
+        });
+    },5000);
     //GPS定位成功
     function onSuccess(position) {
         var gpsPoint = new BMap.Point(position.coords.longitude, position.coords.latitude);
@@ -820,6 +855,10 @@ function caculatePostion() {
     }
     //GPS定位失败
     function onError(error) {
+        var attendAction = $('.attendence-action-panel');
+        if (!attendAction.hasClass('disable')) {
+            attendAction.addClass('disable');
+        }
         var textArea = $('.attend-location-des span');
         textArea.text(getI18NText('lostPunch'));
     }
@@ -837,13 +876,20 @@ function drawMarker(currentPoint, distance) {
         currentPoint = new BMap.Point(localStorage.getItem('currentPointLng'), localStorage.getItem('currentPointLat'));
         distance = localStorage.getItem('distance') || '未知';
     }
-    if(currentPoint.lat === null || currentPoint.lng === null){
+    if (currentPoint.lat === null || currentPoint.lng === null) {
         return;
     }
 
     var cmpPoint = new BMap.Point(store.get('myAttendanceCmp').cmpPoint.lng, store.get('myAttendanceCmp').cmpPoint.lat);
-    var label = new BMap.Label(getI18NText('farFromC') + distance + getI18NText('meter') ,{offset:new BMap.Size(20,-25)});
-    label.setStyle({ border : "1px solid #ff9500", fontSize : "16px" ,borderRadius: "6px",padding : "8px"});
+    var label = new BMap.Label(getI18NText('farFromC') + distance + getI18NText('meter'), {
+        offset: new BMap.Size(20, -25)
+    });
+    label.setStyle({
+        border: "1px solid #ff9500",
+        fontSize: "16px",
+        borderRadius: "6px",
+        padding: "8px"
+    });
     if (geoMarker === null) {
         geoMarker = new BMap.Marker(currentPoint, {
             icon: new BMap.Icon("img/mySelf.png", new BMap.Size(50, 60))
@@ -855,42 +901,3 @@ function drawMarker(currentPoint, distance) {
     }
     geoMarker.setLabel(label);
 }
-
-// function mockPos() {
-//     var gpsPoint = new BMap.Point(121.384469, 31.171177);
-//     var convertor = new BMap.Convertor();
-//     var translateCallback = function(data) {
-//         if (data.status === 0) {
-//             currentPoint = data.points[0];
-//             cmpPoint = new BMap.Point(store.get('myAttendanceCmp').cmpPoint.lng, store.get('myAttendanceCmp').cmpPoint.lat);
-
-//             var tempMap = new BMap.Map();
-//             var distance = tempMap.getDistance(currentPoint, cmpPoint).toFixed(0);
-//             var textArea = $('.attend-location-des span');
-//             var attendAction = $('.attendence-action-panel');
-
-//             if (distance < store.get('myAttendanceCmp').cmpDistance) {
-//                 if (attendAction.hasClass('disable')) {
-//                     attendAction.removeClass('disable');
-//                 }
-//                 textArea.text('已进入打卡范围');
-//             } else {
-//                 if (!attendAction.hasClass('disable')) {
-//                     attendAction.addClass('disable');
-//                 }
-//                 textArea.text('还未进入打卡范围');
-//             }
-
-//             setLocalStorage({
-//                 'currentPointLng': currentPoint.lng,
-//                 'currentPointLat': currentPoint.lat,
-//                 'distance': distance
-//             })
-
-//             if (localStorage.getItem('showMap') === true) {
-//                 drawMarker(currentPoint, distance);
-//             }
-//         }
-//     }
-//     convertor.translate([gpsPoint], 1, 5, translateCallback);
-// }

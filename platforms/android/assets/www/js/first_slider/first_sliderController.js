@@ -15,7 +15,7 @@ define(["app"], function(app) {
         var isFirstUse = localStorage.getItem('isFirstUse');
         var userName = localStorage.getItem("userName");
         var passWord = localStorage.getItem("passWord");
-        var device= localStorage.getItem('device');
+        var device = localStorage.getItem('device');
 
         if (userName && userName != "" && userName != "null" && passWord && passWord != "" && passWord != "null") {
             loginEvent(userName, passWord);
@@ -59,19 +59,7 @@ define(["app"], function(app) {
      */
     function loginEvent(userName, pwd) {
         showLoading();
-        var language = localStorage.getItem('language') || 'en_us';
-        var new_language = 'english';
-        switch(language){
-            case 'zh_cn' : {
-                new_language = 'chinese';
-                break;
-            }
-            case 'zh_tw' : {
-                new_language = 'big5';
-                break;
-            }
-            default : new_language = 'english';
-        }
+        var new_language = translateLanguage();
         var url = ess_getUrl("user/userService/loginByMobile/") + "&username=" + userName + "&password=" + pwd +"&language=" + new_language;
         var onStarSuccess = function(data) { //1:success;0:pwd error;-1:user not exist
             closeLoading();
@@ -86,12 +74,16 @@ define(["app"], function(app) {
                 app.mainView.router.load({
                     url: 'js/myProfile/myProfile.html'
                 });
-            }  else {
+            } else {
                 setLocalStorage({
                     "login_userName": userName,
                     "userName": userName
                 });
-                app.f7.alert(data.message, function() {
+                var message = data.message;
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message, function() {
                     app.router.load('login');
                 });
             }
@@ -105,10 +97,10 @@ define(["app"], function(app) {
             app.f7.alert(getI18NText('network-error'), function() {
                 app.router.load('login');
             });
-            
+
         }
-        getAjaxData(url, onStarSuccess, onError);
-        
+        getAjaxData(null, url, onStarSuccess, onError, null, false);
+
     }
     /**
      * to login page

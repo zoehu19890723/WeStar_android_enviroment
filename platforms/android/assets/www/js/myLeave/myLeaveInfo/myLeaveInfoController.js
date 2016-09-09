@@ -10,11 +10,11 @@ define(["app"], function(app) {
         element: '.leave-item',
         event: 'click',
         handler: openNewPage
-    },{
-        element: '.pull-to-refresh-content',
-        event: 'refresh',
-        handler: init
     }];
+
+    var module = {
+        html : 'myLeave/myLeaveInfo/myLeaveInfo.html'
+    }
     /**
      * init controller
      */
@@ -25,7 +25,7 @@ define(["app"], function(app) {
             "isNull": false,
         };
         var afterRender = function() {
-            app.f7.initPullToRefresh($(".pull-to-refresh-content"));
+            //app.f7.initPullToRefresh($(".pull-to-refresh-content"));
         }
         /**
          * on ajax service success
@@ -53,7 +53,11 @@ define(["app"], function(app) {
                     }
 
                 } else {
-                    app.f7.alert(data.message);
+                    var message = data.message;
+                    if (parseInt(data.status) === 605) {
+                        message = getI18NText('DBError');
+                    }
+                    app.f7.alert(message);
                 }
 
                 var renderObject = {
@@ -77,7 +81,7 @@ define(["app"], function(app) {
             });
         }
 
-        getAjaxData(ess_getUrl("ess/ELeave/getMyLeaveInfo/"), onSuccess, onError);
+        getAjaxData(module,ess_getUrl("ess/ELeave/getMyLeaveInfo/"), onSuccess, onError);
     }
 
     return {
@@ -90,7 +94,7 @@ define(["app"], function(app) {
      */
     function openNewPage(e) {
         var id = $(e.currentTarget).find(".link-page").attr("toPage");
-        var currentTab = $(e.currentTarget).parent().attr("id");
+        var currentTab = $(e.currentTarget).parent().parent().attr("id");
         var code = (currentTab === "tab2") ? 1 : 0;
 
         app.mainView.router.load({

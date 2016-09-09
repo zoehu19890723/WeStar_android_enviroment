@@ -8,26 +8,26 @@ define(["app"], function(app) {
         element: '.leave-item',
         event: 'click',
         handler: openNewPage
-    },{
-        element: '.pull-to-refresh-content',
-        event: 'refresh',
-        handler: init
     }];
-    /**
-     * init controller
-     */
+
+    var module = {
+            html: 'myOverTime/myOverTimeApprove/myOverTimeApprove.html'
+        }
+        /**
+         * init controller
+         */
     function init() {
         showLoading();
         var model_ = {
             "isNull": false
         };
         var afterRender = function() {
-            app.f7.initPullToRefresh($(".pull-to-refresh-content"));
-        }
-        /**
-         * on ajax service success
-         * @param  {Object} data : success data 
-         */
+                //app.f7.initPullToRefresh($(".pull-to-refresh-content"));
+            }
+            /**
+             * on ajax service success
+             * @param  {Object} data : success data 
+             */
         var onSuccess = function(data) {
                 closeLoading();
                 if (parseInt(data.status) === 1) {
@@ -40,7 +40,11 @@ define(["app"], function(app) {
                     }
 
                 } else {
-                    app.f7.alert(data.message);
+                    var message = data.message;
+                    if (parseInt(data.status) === 605) {
+                        message = getI18NText('DBError');
+                    }
+                    app.f7.alert(message);
                 }
                 var renderObject = {
                     selector: $('.myovertimeapprove'),
@@ -48,7 +52,7 @@ define(["app"], function(app) {
                     model: model_,
                     bindings: bindings,
                     beforeRender: weixin_hideBackButton,
-                    afterRender : afterRender
+                    afterRender: afterRender
                 }
                 viewRender(renderObject);
             }
@@ -58,12 +62,12 @@ define(["app"], function(app) {
              */
         var onError = function(e) {
             closeLoading();
-            app.f7.alert(getI18NText('network-error'),function(){
+            app.f7.alert(getI18NText('network-error'), function() {
                 afterRender();
             });
         }
 
-        getAjaxData(ess_getUrl("ess/EOT/getMyOverTimeApproveInfo/"), onSuccess, onError);
+        getAjaxData(module, ess_getUrl("ess/EOT/getMyOverTimeApproveInfo/"), onSuccess, onError);
     }
     return {
         init: init
@@ -75,7 +79,7 @@ define(["app"], function(app) {
     function openNewPage(e) {
         var id = $(e.currentTarget).find(".link-page").attr("toPage");
         var title = $(e.currentTarget).find(".link-page").attr("name");
-        var currentTab = $(e.currentTarget).parent().attr("id");
+        var currentTab = $(e.currentTarget).parent().parent().attr("id");
         var code = (currentTab === "tab2") ? 3 : 2;
 
         app.mainView.router.load({

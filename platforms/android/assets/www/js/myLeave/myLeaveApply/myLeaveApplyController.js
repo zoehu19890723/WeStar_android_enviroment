@@ -20,71 +20,77 @@ define(["app"], function(app) {
         id: '2',
         name: getI18NText('sick-leave')
     }];
-    var leave_type;
-    var eeListPicker;
-
-
+    var AttendanceTime = {};
     var myDate = new Date();
+    var leaveTypeListPicker = null;
 
-    var query_;
+    var module = {
+        html: 'myLeave/myLeaveApply/myLeaveApply.html'
+    }
 
-
-    function init(query) {
-        query_ = query;
+    function init() {
+        showLoading();
         var model_ = {};
-        $.ajax({
-            type: "get",
-            url: ess_getUrl("ess/ELeave/GetLeaveType/"),
-            // url: "http://192.168.9.241/sme/ws.php/ess/ELeave/GetLeaveType/",
-            dataType: "jsonp",
-            timeout: 20000,
-            jsonp: "callback",
-            jsonpCallback: "jsonp" + getRandomNumber(),
-            success: function(data) {
-                closeLoading();
-                if (data.status === 1) {
-                    if (data.data === undefined || (data.data && data.data.length === 0)) {
-                        vacationType = [{
-                            id: '0',
-                            name: getI18NText('no-type-choose')
-                        }];
-                    } else {
-                        vacationType = data.data;
-                    }
-                    model_.photo = localStorage.getItem('attatchPhoto');
-
-                    var renderObject = {
-                        selector: $('.myleaveapply'),
-                        hbsUrl: "js/myLeave/myLeaveApply/myLeaveApply",
-                        model: model_,
-                        bindings: bindings,
-                        beforeRender: weixin_hideBackButton,
-                        afterRender: initPicker
-                    }
-                    viewRender(renderObject);
-
-                } else if (data.status === -1) {
-                    app.f7.alert(data.message, function() {
-                        app.router.load('login');
-                    });
+        var onSuccess = function(data) {
+            closeLoading();
+            if (parseInt(data.status) === 1) {
+                if (data.data === undefined || data.data.leave_type === undefined || data.data.leave_type.length === 0) {
+                    vacationType = [{
+                        id: '0',
+                        name: getI18NText('no-type-choose')
+                    }];
                 } else {
-                    app.f7.alert(data.message);
+                    vacationType = data.data.leave_type;
+                    AttendanceTime = data.data.attendance_time;
                 }
-            },
-            error: function(e) {
-                closeLoading();
-                app.f7.alert(getI18NText('network-error'));
+                model_.photo = localStorage.getItem('attatchPhoto');
+
+                var renderObject = {
+                    selector: $('.myleaveapply'),
+                    hbsUrl: "js/myLeave/myLeaveApply/myLeaveApply",
+                    model: model_,
+                    bindings: bindings,
+                    beforeRender: weixin_hideBackButton,
+                    afterRender: initPicker
+                }
+                viewRender(renderObject);
+
+            } else if (parseInt(data.status) === -1) {
+                app.f7.alert(data.message, function() {
+                    app.router.load('login');
+                });
+            } else {
+                var message = data.message;
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message);
             }
-        });
+        }
 
+        var onError = function(e) {
+            closeLoading();
+            app.f7.alert(getI18NText('network-error'));
+        }
 
+        var url = ess_getUrl("ess/ELeave/GetLeaveType/");
 
+        getAjaxData(module, url, onSuccess, onError);
     }
     return {
         init: init
     };
 
+    function getNextDay() {
+        var now = new Date();
+        var new_date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        return new_date;
+    }
+
     function initPicker() {
+        var defaultStartTime = AttendanceTime.begin_time_am || '09:00';
+        var defaultEndTime = AttendanceTime.end_time_pm || '18:00';
+        var next_day = getNextDay();
         var pickerStart = app.f7.picker({
             input: '#startDate',
             toolbarTemplate: '<div class="toolbar">' +
@@ -97,7 +103,7 @@ define(["app"], function(app) {
                 '</div>' +
                 '</div>' +
                 '</div>',
-            value: [myDate.getFullYear(), myDate.getMonth(), myDate.getDate(), (myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours()), (myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes())],
+            value: [next_day.getFullYear(), next_day.getMonth(), next_day.getDate(), (defaultStartTime.split(':')[0]), (defaultStartTime.split(':')[1])],
             cols: [{
                     textAlign: 'left',
                     values: (function() {
@@ -156,7 +162,7 @@ define(["app"], function(app) {
                     var begin = $.trim($("#startDate").val());
                     var end = $.trim($("#endDate").val());
                     if (!compareTime(begin, end)) {
-                        pickerEnd.setValue([pickerStart.cols[0].value, pickerStart.cols[1].value, pickerStart.cols[2].value, pickerStart.cols[4].value, pickerStart.cols[6].value]);
+                        pickerEnd.setValue([pickerStart.cols[0].value, pickerStart.cols[1].value, pickerStart.cols[2].value, pickerEnd.value[3], pickerEnd.value[4]]);
                     }
                 });
             },
@@ -189,7 +195,7 @@ define(["app"], function(app) {
                 '</div>' +
                 '</div>' +
                 '</div>',
-            value: [myDate.getFullYear(), myDate.getMonth(), myDate.getDate(), (myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours()), (myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes())],
+            value: [next_day.getFullYear(), next_day.getMonth(), next_day.getDate(), (defaultEndTime.split(':')[0]), (defaultEndTime.split(':')[1])],
             cols: [{
                     textAlign: 'left',
                     values: (function() {
@@ -265,7 +271,7 @@ define(["app"], function(app) {
                 return result2;
             }
         });
-        eeListPicker = app.f7.picker({
+        leaveTypeListPicker = app.f7.picker({
             input: '#vacationType',
             toolbarTemplate: '<div class="toolbar">' +
                 '<div class="toolbar-inner">' +
@@ -278,7 +284,6 @@ define(["app"], function(app) {
                 '</div>' +
                 '</div>',
             cols: [{
-
                 values: (function() {
                     var arr = [];
                     $$.each(vacationType, function(index, value) {
@@ -296,11 +301,7 @@ define(["app"], function(app) {
             }],
             formatValue: function(p, values, displayValues) {
                 return displayValues;
-            },
-            onOpen: function() {
-                leave_type = eeListPicker.cols[0].value;
             }
-
         });
     }
 
@@ -323,6 +324,7 @@ define(["app"], function(app) {
 
     function commitVacation() {
 
+        var leave_type = null;
         var begin = $.trim($("#startDate").val());
         var end = $.trim($("#endDate").val());
         var begin_date = begin.split('   ')[0];
@@ -331,14 +333,17 @@ define(["app"], function(app) {
         var end_time = end.split('   ')[1];
         var attatchment = localStorage.getItem("attatchPhoto");
         var remark = $.trim($("#feedback").val());
-        if (eeListPicker !== undefined && eeListPicker.cols[0] !== undefined) {
-            leave_type = eeListPicker.cols[0].value;
-        }
         var check = true;
+
+        if (leaveTypeListPicker !== null && leaveTypeListPicker.cols[0] !== undefined) {
+            leave_type = leaveTypeListPicker.cols[0].value;
+        }
+        
         if (check && vacationType[0].id === "0") {
             check = false;
             app.f7.alert(vacationType[0].name);
         }
+
         if (check && !leave_type) {
             check = false;
             app.f7.alert(getI18NText('enterLeaveType'));
@@ -352,7 +357,6 @@ define(["app"], function(app) {
             check = false;
             app.f7.alert(getI18NText('timeNotNull'));
         }
-
 
         if (check && !compareTime(begin, end)) {
             check = false;
@@ -369,45 +373,42 @@ define(["app"], function(app) {
         };
         if (check) {
             showLoading();
-            $.ajax({
-                type: "get",
-                url: ess_getUrl("ess/ELeave/ApplyELeave/"),
-                data: {
-                    "argsJson": JSON.stringify(argsJson)
-                },
-                dataType: "jsonp",
-                timeout: 20000,
-                jsonp: "callback",
-                jsonpCallback: "jsonp" + getRandomNumber(),
-                success: function(data) {
-                    closeLoading();
-                    if (data.status === 1) {
-                        if (data.data.status === "OK") {
-                            app.f7.alert(getI18NText('leaveSuc') + data.data.leave_days + getI18NText('day'), function() {
-                                localStorage.removeItem("attatchPhoto");
-                                app.mainView.router.back({
-                                    url: "js/myLeave/myLeaveApply/myLeaveApply.html"
-                                });
+            var onSuccess = function(data) {
+                closeLoading();
+                if (parseInt(data.status) === 1) {
+                    if (data.data.status === "OK") {
+                        app.f7.alert(getI18NText('leaveSuc') + data.data.leave_days + getI18NText('day'), function() {
+                            localStorage.removeItem("attatchPhoto");
+                            app.mainView.router.back({
+                                url: "js/myLeave/myLeaveApply/myLeaveApply.html"
                             });
-                        } else {
-                            app.f7.alert(data.data.msg);
-                        }
-
-                    } else if (data.status === -1) {
-                        app.f7.alert(data.message, function() {
-                            app.router.load('login');
                         });
                     } else {
-                        app.f7.alert(data.message);
+                        app.f7.alert(data.data.msg);
                     }
-                },
-                error: function(e) {
-                    closeLoading();
-                    app.f7.alert(getI18NText('network-error'));
+
+                } else if (parseInt(data.status) === -1) {
+                    app.f7.alert(data.message, function() {
+                        app.router.load('login');
+                    });
+                } else {
+                    var message = data.message;
+                    if (parseInt(data.status) === 605) {
+                        message = getI18NText('DBError');
+                    }
+                    app.f7.alert(message);
                 }
-            });
+            }
+            var onError = function(e) {
+                closeLoading();
+                app.f7.alert(getI18NText('network-error'));
+            }
+            var url = ess_getUrl("ess/ELeave/ApplyELeave/");
+            var data = {
+                "argsJson": JSON.stringify(argsJson)
+            }
 
+            getAjaxData(module, url, onSuccess, onError, data);
         }
-
     }
 });

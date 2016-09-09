@@ -75,6 +75,7 @@ define(function() {
 		'ot-end-timeNotNull' : '加班结束时间不能为空',
 		'ot-succeed' : '成功加班',
 		'ot-hour' : '小时',
+		'no-overtime-type-choice-text' : '您没有可选的加班类型',
 
         //考勤
         'punching' : '打卡中...',
@@ -194,7 +195,7 @@ define(function() {
 		'sureQuit' : '您确定要退出系统么？',
 		'accountSet' : '账号设置',
 		'lanSet' : '语言设置',
-		'about' : '关于',
+		'about' : '关于WeStar',
 		'updateV' : ' 版本更新',
 		'CH' : '简体中文',
 		'TW' : '繁体中文',
@@ -229,9 +230,20 @@ define(function() {
 		'GeoLoading' : '正在定位中...',
 		'session-overtime' : '会话超时，重新登录',
 		'see-detail' : '查看详情',
-		'exitAfterAgainTap' : '再按一次退出'
+		'exitAfterAgainTap' : '再按一次退出',
 
+		'my' : '我的',
+		'prep' : '的',
+		'StarProfile' : '人事档案',
 
+		'unknown' : '未知',
+		'noUserId' : '用户ID不存在',
+
+		'current-version' : '当前版本',
+		'transferTitle' : '的异动申请',
+
+		'DBError' : '数据库操作异常',
+		'ApproveDataError' : '该申请异常，不能进行审批'
 	}
 	var locale_TW ={
 		
@@ -279,7 +291,7 @@ define(function() {
 		'leave-info-show' : '休假信息查看',
 		'leave-approve' : '休假審批',
 		'choose-leave-type' : '選擇您的休假類型',
-		'no-type-choose' : '您沒有可選休假類型 ',
+		'no-type-choose' : '您沒有可選休假類型',
 		'year-leave' : '年假',
 		'sick-leave' : '病假',
 		'enterLeaveType' : '請填寫休假類型',
@@ -308,6 +320,7 @@ define(function() {
 		'ot-end-timeNotNull' : '加班開始時間不能爲空',
 		'ot-succeed' : '成功加班',
 		'ot-hour' : '小時',
+		'no-overtime-type-choice-text' : '您沒有可選加班類型',
 
 		//考勤
 		'punching' : '打卡中...',
@@ -427,7 +440,7 @@ define(function() {
 		'sureQuit' : '您確定要退出系統麽？',
 		'accountSet' : '賬號設置',
 		'lanSet' : '語言設置',
-		'about' : '關於',
+		'about' : '關於WeStar',
 		'updateV' : ' 版本更新',
 		'CH' : '簡體中文',
 		'TW' : '繁體中文',
@@ -464,7 +477,20 @@ define(function() {
 		'session-overtime' : '會話超時，重新登錄',
 		'see-detail' : '查看詳情',
 
-		'exitAfterAgainTap' : '再按壹次退出'
+		'exitAfterAgainTap' : '再按壹次退出',
+
+		'my' : '我的',
+		'prep' : '的',
+		'StarProfile' : '人事檔案',
+
+		'unknown' : '未知',
+		'noUserId' : '用戶ID不存在',
+
+		'current-version' : '當前版本',
+		'transferTitle' : '的異動申請',
+
+		'DBError' : '數據庫操作異常',
+		'ApproveDataError' : '該申請異常，不能進行審批'
 	}
 
 	var locale_EN ={
@@ -547,6 +573,7 @@ define(function() {
 		'ot-end-timeNotNull' : 'Overtime end time cannot be null',
 		'ot-succeed' : 'Succeed applying overtime for',
 		'ot-hour' : 'hour',
+		'no-overtime-type-choice-text' : 'No OT type to choose',
 
 		//考勤
 		'punching' : 'Punching...',
@@ -669,7 +696,7 @@ define(function() {
 		'sureQuit' : 'Sure to exit?',
 		'accountSet' : 'Account setting',
 		'lanSet' : 'Language setting',
-		'about' : 'About',
+		'about' : 'About WeStar',
 		'updateV' : 'Version update',
 		'CH' : 'Simplified Chinese',
 		'TW' : 'Traditional Chinese',
@@ -698,7 +725,19 @@ define(function() {
 		'session-overtime' : 'The session timeout , please login again;',
 		'see-detail' : 'see details',
 
-		'exitAfterAgainTap' : 'Exit after another press'
+		'exitAfterAgainTap' : 'Exit after another press',
+
+		'my' : 'My',
+		'prep' : '\'s',
+		'StarProfile' : ' Information',
+		'unknown' : 'unknown',
+		'noUserId' : 'User ID does not exist',
+
+		'current-version' : 'Current Version',
+		'transferTitle' : '\'s Transfer Apply',
+
+		'DBError' : 'Database operation error',
+		'ApproveDataError' : 'Apply data error,you cannot approve or reject'
 	}
 
 	return {

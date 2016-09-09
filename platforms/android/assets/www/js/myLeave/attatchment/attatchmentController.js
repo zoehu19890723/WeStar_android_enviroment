@@ -15,12 +15,12 @@ define(["app"], function(app) {
 
 
     var query_;
-    var serviceIP =Star_envUrl;
+    var serviceIP = Star_envUrl;
     var sessionID = localStorage.getItem('sessionid');
 
     function init(query) {
         query_ = query;
-        var afterRender = function(template){
+        var afterRender = function(template) {
             app.f7.popup(template);
             app.f7.closeModal(template)
         }
@@ -42,7 +42,7 @@ define(["app"], function(app) {
 
         //上传图片
 
-        if (imgURL == "") {
+        if (imgURL === "") {
             app.f7.alert(getI18NText('noPFind'), '');
         } else {
             var serviceURL = encodeURI(serviceIP + '/system/EFile/upload/;jsessionid=' + sessionID);

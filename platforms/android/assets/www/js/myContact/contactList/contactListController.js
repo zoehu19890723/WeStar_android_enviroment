@@ -11,131 +11,156 @@ define(["app"], function(app) {
     var flag = 0;
 
     var bindings = [{
-            element: '.left',
-            event: 'click',
-            handler: openNewPage
-        }, {
-            element: '.wx-item',
-            event: 'click',
-            handler: seeDetail
-        }, {
-            element: '.wx-item',
-            event: 'touchstart',
-            handler: showFocus
-        }, {
-            element: '.wx-item',
-            event: 'touchend',
-            handler: hideFocus
-        },
-        //{element: '#search-key', event: 'click', handler: searchList},
-        //{element: '#cancel-key', event: 'click', handler: init},
-        {
-            element: '.tab-link',
-            event: 'click',
-            handler: jumpPage
-        }
-    ];
+        element: '.left',
+        event: 'click',
+        handler: openNewPage
+    }, {
+        element: '.my-contact-list',
+        event: 'click',
+        handler: seeDetail
+    }, {
+        element: '.tab-link',
+        event: 'click',
+        handler: jumpPage
+    }];
+
+    var module = {
+        html: 'myContact/contactList/contactList.html'
+    }
 
     function init(query) {
         var list__ = store.get('myContact');
         if (list__) {
-            showList({
-                "list": list__
-            });
+            showList(list__);
         } else {
             showLoading();
-            $.ajax({
-                type: "get",
-                url: ess_getUrl("humanresource/HumanResourceWebsvcService/getAddressList/"),
-                dataType: "jsonp",
-                timeout: 20000,
-                jsonp: "callback",
-                jsonpCallback: "jsonp" + getRandomNumber(),
-                success: function(json) {
-                    closeLoading();
-                    if (1 == json.status) {
-                        var list__ = new Array();
-                        var allContacts = new Array();
-                        var content_ = {};
-                        var j = 0;
-                        $.each(json.data.list, function(i, value) {
-                            if (value && value.length > 0) {
-                                var obj_ = {};
-                                obj_.letter = i;
-                                obj_.childList = value;
-                                for (var i = 0; i < obj_.childList.length; i++) {
-                                    if (j == 6) j = 0;
-                                    //管理员临时赋id
-                                    if (!obj_.childList[i].id) obj_.childList[i].id = 000;
-                                    //统一性别
-                                    if (obj_.childList[i].gender == getI18NText('female') || obj_.childList[i].gender == "p_f" || obj_.childList[i].gender == false) obj_.childList[i].gender = false;
-                                    else obj_.childList[i].gender = true;
-                                    //增加拼音属性
-                                    if(obj_.childList[i].name)
-                                    {
-                                        obj_.childList[i].pinyin = pinyin.getFullChars(value[i].name).toLowerCase();
-                                    }
-                                    if (!obj_.childList[i].photo) {
-                                        obj_.childList[i].color = color[j];
-                                        j++;
-                                    } else {
-                                        obj_.childList[i].color = "";
-                                    }
-                                    //统一头像
-                                    if (localStorage.getItem('backStage') == "1") {
-                                        var photo = obj_.childList[i].photo;
-                                        if (photo && '' !== photo && photo.indexOf(Star_imgUrl) < 0) {
-                                            photo = photo.replace(/\s/g, '%20');
-                                            obj_.childList[i].photo = Star_imgUrl + photo;
-                                        }
-                                    }
-
+            var onSuccess = function(json) {
+                closeLoading();
+                if (parseInt(json.status) === 1) {
+                    var new_list = [];
+                    $.each(json.data.list, function(letter, list) {
+                        if (letter !== undefined && letter !== null) {
+                            var new_obj = {
+                                letter: letter,
+                                className: "wx-title"
+                            }
+                            new_list.push(new_obj);
+                        }
+                        if (list !== undefined && list !== null && list.length > 0) {
+                            list.forEach(function(subItem) {
+                                if (subItem.gender === getI18NText('female') || subItem.gender === "p_f" || subItem.gender === false) {
+                                    subItem.gender = false;
+                                } else {
+                                    subItem.gender = true;
                                 }
 
-                                list__.push(obj_);
-                            }
-                        });
-                        store.set('myContact', list__);
-                        showList({
-                            "list": list__
-                        });
+                                if (subItem.name !== undefined && subItem.name !== null) {
+                                    subItem.pinyin = pinyin.getFullChars(subItem.name).toLowerCase();
+                                }
 
-                    } else if (json.status == "-1") {
-                        app.f7.alert(json.message, function() {
-                            app.router.load('login');
-                        });
-                    } else {
-                        closeLoading();
-                        app.f7.alert(json.message);
-                    }
-                },
-                error: function(e) {
-                    closeLoading();
-                    app.f7.showPreloader(getI18NText('network-error'))
-                    setTimeout(function() {
-                        app.f7.hidePreloader();
-                    }, 2000);
-                    app.mainView.router.back({
-                        force: true,
-                        url: "index.html"
+                                var photo = subItem.photo;
+                                if (photo && '' !== photo && photo.indexOf(Star_imgUrl) < 0) {
+                                    photo = photo.replace(/\s/g, '%20');
+                                    subItem.photo = Star_imgUrl + photo;
+                                }
+
+                                subItem.className = "wx-item";
+                            })
+                            new_list = new_list.concat(list);
+                        }
                     });
+                    store.set('myContact', new_list);
+                    showList(new_list);
+                } else if (parseInt(json.status) === -1) {
+                    app.f7.alert(json.message, function() {
+                        app.router.load('login');
+                    });
+                } else {
+                    closeLoading();
+                    var message = json.message;
+                    if (parseInt(json.status) === 605) {
+                        message = getI18NText('DBError');
+                    }
+                    app.f7.alert(message);
                 }
-            });
+            };
+            var onError = function(e) {
+                closeLoading();
+                app.f7.showPreloader(getI18NText('network-error'))
+                setTimeout(function() {
+                    app.f7.hidePreloader();
+                }, 2000);
+                app.mainView.router.back({
+                    force: true,
+                    url: "index.html"
+                });
+            }
+            var url = ess_getUrl("humanresource/HumanResourceWebsvcService/getAddressList/");
+
+            getAjaxData(module, url, onSuccess, onError);
         }
     }
 
-    function showList(model) {
+
+    function initVisualList(list) {
+        var myList = app.f7.virtualList('.my-contact-list', {
+            items: list,
+            rowsBefore: 60,
+            rowsAfter: 60,
+            renderItem: function(index, item) {
+                var str = '';
+                if (item.letter !== undefined) {
+                    str = '<li class="wx-title">&nbsp;&nbsp;&nbsp;' + item.letter + '</li>'
+                } else {
+                    str = '<li class="wx-item" toPage="' + item.id + '" >' + '<span class="wx-icon cut-img" id="ico_' + item.id + '">' + '<img src=' + item.photo + ' onload="AutoResizeImage(36,this)" onerror="javascript:this.src=\'./img/default.jpg\';">' + '</span>' + '<div class="wx-name">' + item.name + '</div>' + '<div class="wx-pos" style="font-size:12px;min-height:12px">';
+                    if (item.position !== undefined && item.position !== null && item.position !== 'null') {
+                        str += item.position;
+                    } else if (item.mobile !== undefined && item.mobile !== null && item.mobile !== 'null') {
+                        str += item.mobile;
+                    } else {
+                        str += '';
+                    }
+                    str += '</div></li>';
+                }
+                return str;
+            },
+
+            height: function(item) {
+                if (item.letter !== undefined) {
+                    return 23;
+                } else {
+                    return 53;
+                }
+            },
+            searchAll: function(query, items) {
+                var foundItems = [];
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].name !== undefined || items[i].position !== undefined) {
+                        if (items[i].name !== null && items[i].name.indexOf(query.trim()) >= 0) {
+                            foundItems.push(i);
+                        } else if (items[i].position !== null && items[i].position.indexOf(query.trim()) >= 0) {
+                            foundItems.push(i);
+                        }
+                    }
+                }
+                // Return array with indexes of matched items
+                return foundItems;
+            }
+        });
+    }
+
+    function showList(new_list) {
         var afterRender = function() {
-            weixin_hideToolBar()
+            initVisualList(new_list);
             var mySearchbar = app.f7.searchbar('.searchbar', {
-                searchList: '.wx-contacts',
+                searchList: '.my-contact-list',
                 searchIn: '.wx-name',
             });
         }
         var renderObject = {
             selector: $('.contactList'),
             hbsUrl: "js/myContact/contactList/contactList",
-            model: model,
+            model: {},
             bindings: bindings,
             beforeRender: weixin_hideBackButton,
             afterRender: afterRender
@@ -144,39 +169,9 @@ define(["app"], function(app) {
     }
 
     function seeDetail(e) {
-
-        var id = $(e.currentTarget).attr("toPage");
-        var id_ = $(e.currentTarget).attr("data-id");
-        var name = $(e.currentTarget).attr("data-name");
-        var color_ = $(e.currentTarget).attr("data-color");
-        var email = $(e.currentTarget).attr("data-email");
-        var gender = $(e.currentTarget).attr("data-gender");
-        var mobile = $(e.currentTarget).attr("data-mobile");
-        var photo = $(e.currentTarget).attr("data-photo");
-        var pinyin = $(e.currentTarget).attr("data-pinyin");
-        var post = $(e.currentTarget).attr("data-post");
-        var supervisor = $(e.currentTarget).attr("data-supervisor");
-        var favorite = $(e.currentTarget).attr("data-favorite");
-        var photoText = $(e.currentTarget).attr("data-photoText");
-        var organization = $(e.currentTarget).attr("data-organization");
-        var data = {
-            "id": id_,
-            "color": color_,
-            "favorite": favorite,
-            "photoText": photoText,
-            "email": email,
-            "name": name,
-            "gender": gender,
-            "mobile": mobile,
-            "photo": photo,
-            "pinyin": pinyin,
-            "post": post,
-            "supervisor":supervisor,
-            "organization":organization
-        };
-        var pla_data = JSON.stringify(data);
+        var id = $(e.target).parent().attr("toPage") || $(e.target).attr("toPage") || $(e.target).parent().parent().attr("toPage");
         app.mainView.router.load({
-            url: "js/myContact/contactDetail/contactDetail.html?data=" + pla_data
+            url: "js/myContact/contactDetail/contactDetail.html?id=" + id
         });
     }
 
@@ -194,29 +189,18 @@ define(["app"], function(app) {
                 url: "js/myProfile/myProfile.html",
                 animatePages: false
             })
-        } else if ("myContact" == id) {
-        }
-        else  if ("myMessage" == id){
+        } else if ("myContact" == id) {} else if ("myMessage" == id) {
             app.mainView.router.load({
                 url: "js/myMessage/messageOverview/messageOverview.html",
                 animatePages: false
             })
-        }else {
+        } else {
             app.mainView.router.load({
                 url: "js/ee_self/self_base/self_base.html",
                 animatePages: false
             })
         }
     }
-
-    function showFocus() {
-        $(this).addClass("focus");
-    }
-
-    function hideFocus() {
-        $(this).removeClass("focus");
-    }
-
     return {
         init: init
     };

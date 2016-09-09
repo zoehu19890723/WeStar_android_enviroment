@@ -9,11 +9,10 @@ define(["app"], function(app) {
         element: '.leave-item',
         event: 'click',
         handler: openNewPage
-    },{
-        element: '.pull-to-refresh-content',
-        event: 'refresh',
-        handler: init
     }];
+    var module = {
+        html : 'myOverTime/myOverTimeInfo/myOverTimeInfo.html'
+    }
     /**
      * init controller
      */
@@ -24,7 +23,7 @@ define(["app"], function(app) {
             "isNull": false,
         };
         var afterRender = function() {
-            app.f7.initPullToRefresh($(".pull-to-refresh-content"));
+            //app.f7.initPullToRefresh($(".pull-to-refresh-content"));
         }
         /**
          * on ajax service success
@@ -75,7 +74,7 @@ define(["app"], function(app) {
             });
         }
 
-        getAjaxData(ess_getUrl("ess/EOT/getMyOverTimeInfo/"), onSuccess, onError);
+        getAjaxData(module,ess_getUrl("ess/EOT/getMyOverTimeInfo/"), onSuccess, onError);
     }
 
     return {
@@ -87,7 +86,7 @@ define(["app"], function(app) {
      */
     function openNewPage(e) {
         var id = $(e.currentTarget).find(".link-page").attr("toPage");
-        var currentTab = $(e.currentTarget).parent().attr("id");
+        var currentTab = $(e.currentTarget).parent().parent().attr("id");
         var code = (currentTab === "tab2") ? 1 : 0;
 
         app.mainView.router.load({

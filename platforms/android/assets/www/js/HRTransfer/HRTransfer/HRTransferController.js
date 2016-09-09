@@ -3,12 +3,11 @@ define(["app"], function(app) {
         element: '.leave-item',
         event: 'click',
         handler: openNewPage
-    },{
-        element: '.pull-to-refresh-content',
-        event: 'refresh',
-        handler: init
     }];
 
+    var module = {
+        html : 'HRTransfer/HRTransfer/HRTransfer.html'
+    }
     /**
      * init controller
      */
@@ -17,9 +16,6 @@ define(["app"], function(app) {
         var model_ = {
             "isNull": false,
         };
-        var afterRender = function() {
-            app.f7.initPullToRefresh($(".pull-to-refresh-content"));
-        }
         /**
          * on ajax service success
          * @param  {Object} data : success data 
@@ -27,7 +23,7 @@ define(["app"], function(app) {
         var onSuccess = function(data) {
                 closeLoading();
                 if (parseInt(data.status) === 1) {
-                    if (data.data === undefined || (data.data && data.data.length === 0)) {
+                    if (data.data === undefined || data.data === null || (data.data && data.data.length === 0)) {
                         model_.isNull = true;
                     } else {
                         var tempArr = data.data.notApproved || [];
@@ -45,7 +41,9 @@ define(["app"], function(app) {
                         model_.data = data.data;
                     }
 
-                } else {
+                }else if(parseInt(data.status) === 605){
+                    app.f7.alert(getI18NText('DBError'));
+                }else {
                     app.f7.alert(data.message);
                 }
                 var renderObject = {
@@ -54,7 +52,6 @@ define(["app"], function(app) {
                     model: model_,
                     bindings: bindings,
                     beforeRender: weixin_hideBackButton,
-                    afterRender: afterRender
                 }
                 viewRender(renderObject);
             }
@@ -64,15 +61,11 @@ define(["app"], function(app) {
              */
         var onError = function(e) {
             closeLoading();
-            app.f7.alert(getI18NText('network-error'),function(){
-                afterRender();
-            });
+            app.f7.alert(getI18NText('network-error'));
         }
 
-      getAjaxData(ess_getUrl("humanresource/HumanResourceRelocationWebsvcService/getMyTransferApproveInfo/"), onSuccess, onError);
-
-
-            }
+      getAjaxData(module,ess_getUrl("humanresource/HumanResourceRelocationWebsvcService/getMyTransferApproveInfo/"), onSuccess, onError);
+    }
     return {
         init: init
     };
@@ -83,7 +76,7 @@ define(["app"], function(app) {
     function openNewPage(e) {
         var id = $(e.currentTarget).find(".link-page").attr("toPage");
         var title = $(e.currentTarget).find(".link-page").attr("name") || '未知';
-        var currentTab = $(e.currentTarget).parent().attr("id");
+        var currentTab = $(e.currentTarget).parent().parent().attr("id");
         var code = (currentTab === "tab2") ? 1 : 0;
 
         app.mainView.router.load({

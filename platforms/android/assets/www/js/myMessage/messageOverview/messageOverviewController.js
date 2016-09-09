@@ -82,12 +82,10 @@ define(["app"], function(app) {
                                         obj_.childList[i].color = "";
                                     }
                                     //统一头像
-                                    if (localStorage.getItem('backStage') == "1") {
-                                        var photo = obj_.childList[i].photo;
-                                        if (photo && '' !== photo && photo.indexOf(Star_imgUrl) < 0) {
-                                            photo = photo.replace(/\s/g, '%20');
-                                            obj_.childList[i].photo = Star_imgUrl + photo;
-                                        }
+                                    var photo = obj_.childList[i].photo;
+                                    if (photo && '' !== photo && photo.indexOf(Star_imgUrl) < 0) {
+                                        photo = photo.replace(/\s/g, '%20');
+                                        obj_.childList[i].photo = Star_imgUrl + photo;
                                     }
 
                                 }

@@ -17,6 +17,10 @@ define(["app"], function(app) {
         handler: backToPrevious
     }];
 
+    var module = {
+        html: 'self_base/setting/setting.html'
+    }
+
     function init() {
         var renderObject = {
             selector: $('.setting'),
@@ -48,32 +52,32 @@ define(["app"], function(app) {
         var setLanguage = function(language) {
 
             var onSuccess = function(data) {
-                if (data.status === 1) {
+                if (parseInt(data.status) === 1) {
                     var userName = localStorage.getItem("userName");
                     var passWord = localStorage.getItem("passWord");
                     var sessionid = localStorage.getItem("sessionid");
                     var device = localStorage.getItem("device");
                     var browser = localStorage.getItem("browser");
-                    
+
                     localStorage.clear();
 
                     setLocalStorage({
-                        "userName" : userName,
-                        "passWord" : passWord,
-                        "sessionid" :  sessionid,
-                        "device" : device,
-                        "isFirstUse" : '1',
-                        "language" : language,
-                        "languageSet" : "true",
-                        "browser" : browser,
-                        "login_userName" : userName
+                        "userName": userName,
+                        "passWord": passWord,
+                        "sessionid": sessionid,
+                        "device": device,
+                        "isFirstUse": '1',
+                        "language": language,
+                        "languageSet": "true",
+                        "browser": browser,
+                        "login_userName": userName
                     });
 
                     var new_f7 = new Framework7({
                         modalTitle: '',
                         animateNavBackIcon: true,
-                        dynamicNavbar:true,
-                        cache:true,
+                        dynamicNavbar: true,
+                        cache: true,
                         modalButtonOk: getI18NText('confirmP'),
                         modalButtonCancel: getI18NText('cancelP')
                     });
@@ -81,6 +85,8 @@ define(["app"], function(app) {
                     app.f7 = new_f7;
 
                     app.mainView.router.refreshPage();
+                } else if (parseInt(data.status) === 605) {
+                    app.f7.alert(getI18NText('DBError'));
                 } else {
                     app.f7.alert(data.message);
                 }
@@ -91,41 +97,30 @@ define(["app"], function(app) {
             }
 
             var url = ess_getUrl("user/userService/switchLanguage/");
-            var new_language = 'english';
-            switch(language){
-                case 'zh_cn' : {
-                    new_language = 'chinese';
-                    break;
-                }
-                case 'zh_tw' : {
-                    new_language = 'big5';
-                    break;
-                }
-                default : new_language = 'english';
-            }
+            var new_language = translateLanguage(language);
             var data = {
                 "argsJson": JSON.stringify({
                     language: new_language
                 })
             }
-            getAjaxData(url,onSuccess, onError,data);
+            getAjaxData(module, url, onSuccess, onError, data);
         }
 
         var buttons = [{
             text: getI18NText('CH'),
-            onClick: function(){
+            onClick: function() {
                 setLanguage('zh_cn');
             }
-            
+
         }, {
             text: getI18NText('TW'),
-            onClick: function(){
+            onClick: function() {
                 setLanguage('zh_tw');
             }
-            
+
         }, {
             text: getI18NText('EN'),
-            onClick: function(){
+            onClick: function() {
                 setLanguage('en_us');
             }
         }];
@@ -155,7 +150,7 @@ define(["app"], function(app) {
             });
         } else if ("aboutStar" === id) {
             app.mainView.router.load({
-                url: "./views/"
+                url: "./js/ee_self/about/about.html"
             });
         }
     }
@@ -186,7 +181,7 @@ define(["app"], function(app) {
                 //    app.f7.alert("网络异常，请稍后重试。");
                 //}
                 //var url = ess_getUrl("", "ess/ELeave/getleaveDetailInfo/");
-                //getAjaxData(url, onSuccess, onError);
+                //getAjaxData(module, url, onSuccess, onError);
             var data = {
                 "status": "1",
                 "message": "操作成功！",

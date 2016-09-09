@@ -23,6 +23,10 @@ define(["app"], function(app) {
         handler: openProfile
     }];
 
+    var module = {
+        html : 'myTeam/myTeam.html'
+    }
+
     /**
      * init controller 
      */
@@ -46,7 +50,9 @@ define(["app"], function(app) {
 
         var onError = function(e){
             closeLoading();
-            app.f7.alert(getI18NText('network-error'));
+            app.f7.alert(getI18NText('network-error'),function(){
+                backToMain();
+            });
         }
         var onSuccess = function(data){
             if(data.status === "1" || data.status === 1){
@@ -62,40 +68,69 @@ define(["app"], function(app) {
                 
             }else{
                 closeLoading();
-                app.f7.alert(data.message);
+                var message = data.message;
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message,function(){
+                    backToMain();
+                });
+            }
+        }
+
+        var onReStoreData = function(data){
+            if(data.status === "1" || data.status === 1){
+                var photo=data.data.profile.photo;
+                if(photo &&''!==photo && photo.indexOf(Star_imgUrl)< 0){
+                    data.data.profile.photo = Star_imgUrl + photo;
+                }
+                storeWithExpiration.set('ee_person',data.data);
+            }else{
+                closeLoading();
+                var message = data.message;
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message);
             }
         }
 
         var url = ess_getUrl("humanresource/HumanResourceWebsvcService/getEmployeeProfile/");
         
         if(!storeWithExpiration.get("ee_person")){
-            getAjaxData(url,onSuccess, onError);
+            getAjaxData(module,url,onSuccess, onError);
         }else{
             parent_obj = _.pick(storeWithExpiration.get("ee_person").profile,'name', 'id','emp_code');
             parent_obj.fullname = parent_obj.name;
             store.set('parent',[parent_obj]);
             getMyTeamMember(storeWithExpiration.get("ee_person").profile.id);
             
+            getAjaxData(module,url,onReStoreData, onError);
         }
     }
 
     function getMyTeamMember(id,animation){
-        if(id === undefined || id === null){
-            closeLoading();
-            return;
-        }
+        
 
         var onError = function(e){
             closeLoading();
-            app.f7.alert(getI18NText('network-error'));
+            app.f7.alert(getI18NText('network-error'),function(){
+                backToMain();
+            });
         }
 
         var onSuccess = function(data){
-            if(data.status === 1){
+            if(parseInt(data.status) === 1){
                 setView(data.data,animation)
             }else{
                 closeLoading();
-                app.f7.alert(data.message);
+                var message = data.message;
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message,function(){
+                    backToMain();
+                });
             }
         }
         var data = {
@@ -104,7 +139,15 @@ define(["app"], function(app) {
                 })
             }
         var url = ess_getUrl("ess/SubordinateService/GetSubordinateByEmpId/");
-        getAjaxData(url,onSuccess, onError,data);
+        if(id === undefined || id === null){
+            closeLoading();
+            app.f7.alert(getI18NText('noUserId'),function(){
+                backToMain();
+            });
+        }else{
+            getAjaxData(module,url,onSuccess, onError,data);
+        }
+        
     }
 
     function setView(data,animation){
@@ -175,8 +218,9 @@ define(["app"], function(app) {
 
     function openProfile(e){
         var id = $(e.currentTarget).attr("toPage");
+        var name = $(e.currentTarget).find(".emp-name span").text();
         app.mainView.router.load({
-            url: './js/WeStarPerson/summary/summary.html?id='+id,
+            url: './js/weStarPerson/summary/summary.html?id='+id+'&name='+name,
         });
     }
 

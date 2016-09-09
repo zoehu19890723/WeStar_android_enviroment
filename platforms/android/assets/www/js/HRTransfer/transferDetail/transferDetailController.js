@@ -22,12 +22,14 @@ define(["app"], function(app) {
      */
     var id = "";
     var code = 0;
+    var title = '';
+
     /**
      * init the controller
      * @param  {Object} query : Object with title,id and code
      */
     function init(query) {
-        var title = (query.title) + "的异动申请"; //谁发起的申请
+        title = (query.title) + getI18NText('transferTitle'); //谁发起的申请
         id = query.id;
         code = parseInt(query.code); //0:：待我审批的；1：我已审批的
 
@@ -48,23 +50,31 @@ define(["app"], function(app) {
                     if (data.data === undefined || (data.data && data.data.length === 0)) {
                         model_.isNull = true;
                     } else {
-                        model_.data = data.data;
-                        model_.data.flowPerson = [];
                         if (data.data.applyPerson !== undefined) {
                             data.data.applyPerson = dealImage([data.data.applyPerson], true)[0];
-                            model_.data.flowPerson.push(data.data.applyPerson);
                             if (data.data.approvePerson !== undefined && data.data.approvePerson.length !== 0) {
-                                generalId = data.data.approvePerson[data.data.approvePerson.length - 1].id;
-                                data.data.approvePerson = dealImage(data.data.approvePerson, true);
-                                model_.data.flowPerson = model_.data.flowPerson.concat(data.data.approvePerson)
+                                var last_person_arr = data.data.approvePerson[data.data.approvePerson.length - 1].data;
+                                last_person_arr.forEach(function(item){
+                                    var status = parseInt(item.status.step_status);
+                                    if(status === 1){
+                                        generalId = item.id;
+                                        return;
+                                    }
+                                })
+                                data.data.approvePerson.forEach(function(item){
+                                    item.data = dealPersonImage(item.data);
+                                })
                             }
                         }
+                        model_.data = data.data;
                     }
-                } else {
+                } else if(parseInt(data.status) === 605){
+                    app.f7.alert(getI18NText('DBError'));
+                }else {
                     app.f7.alert(data.message);
                 }
                 var afterRender = function() {
-                    if (model_.data && model_.data.flowPerson !== undefined && model_.data.flowPerson !== null) {
+                    if (model_.data && model_.data.approvePerson !== undefined && model_.data.approvePerson !== null) {
                         var heightTop = $('.one-item').first().find('.status-img').offset().top;
                         var heightBottom = $('.one-item').last().find('.status-img').offset().top;
                         var height = heightBottom - heightTop + 40;
@@ -91,7 +101,15 @@ define(["app"], function(app) {
         }
 
         var url = ess_getUrl("humanresource/HumanResourceRelocationWebsvcService/getTransferDetailInfo/") + "&argsJson={\"id\":" + id + "}";
-        getAjaxData(url, onSuccess, onError);
+        var module = {
+            html : 'HRTransfer/HRTransfer/HRTransfer.html',
+            param : {
+                id : id,
+                title : title,
+                code : code
+            }
+        }
+        getAjaxData(module,url, onSuccess, onError);
     }
     return {
         init: init
@@ -111,20 +129,38 @@ define(["app"], function(app) {
         });
     }
 
+     function dealPersonImage(array) {
+        if (array && array.length !== 0) {
+            array.forEach(function(item, index) {
+                var subItem = item;
+                if (subItem && subItem.image && subItem.image !== "" && subItem.image.indexOf(Star_imgUrl) < 0) {
+                    var image = subItem.image.replace(/\s/g, '%20');
+                    subItem.image = Star_imgUrl + image;
+                    item = subItem;
+                }
+            })
+        }
+        return array;
+    }
+
     /**
      * Click the pass or reject button when approve the item
      * @param  {Object} e click event object
      */
     function clickAction(e) {
+        if(generalId === null){
+            app.f7.alert(getI18NText('ApproveDataError'));
+            return;
+        }
         showLoading();
         var actionButton = $('.approve-link-actions');
-        var code = $(e.currentTarget).attr("code");
+        var ActionCode = $(e.currentTarget).attr("code");
         actionButton.addClass("disable-click");
         var onSuccess = function(data) {
             closeLoading();
             actionButton.removeClass("disable-click");
             if (parseInt(data.status) === 1 && data.data && data.data.status === true) {
-                app.f7.alert(getI18NText('approveSuc'), function() {
+                app.f7.alert(getI18NText('approvalSuc'), function() {
                     app.mainView.router.back({
                         url: "./js/HRTransfer/HRTransfer/HRTransfer.html",
                         ignoreCache: true,
@@ -133,6 +169,9 @@ define(["app"], function(app) {
                 });
             } else {
                 var msg = (data.data.message) ? data.data.message : data.message;
+                if(parseInt(data.status) === 605){
+                    msg = getI18NText('DBError');
+                }
                 app.f7.alert(msg, function() {
                     app.mainView.router.back({
                         url: "./js/HRTransfer/HRTransfer/HRTransfer.html",
@@ -152,16 +191,24 @@ define(["app"], function(app) {
         var url = ess_getUrl("humanresource/HumanResourceRelocationWebsvcService/ApproveTransfer/");
         var reson = $("#leave-reson").val();
         if (reson === null || reson === "") {
-            reson = (parseInt(code) === 0) ? getI18NText('approve') : getI18NText('refuse')
+            reson = (parseInt(ActionCode) === 0) ? getI18NText('approve') : getI18NText('refuse')
         }
         var data = {
             "argsJson": JSON.stringify({
                 "id": parseInt(generalId),
-                "resultCode": parseInt(code),
+                "resultCode": parseInt(ActionCode),
                 "msg": reson
             })
         }
-        getAjaxData(url, onSuccess, onError, data);
+        var module = {
+            html : 'HRTransfer/HRTransfer/HRTransfer.html',
+            param : {
+                id : id,
+                title : title,
+                code : code
+            }
+        }
+        getAjaxData(module, url, onSuccess, onError, data);
     }
 
 

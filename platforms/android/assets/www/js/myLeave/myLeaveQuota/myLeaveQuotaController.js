@@ -6,6 +6,10 @@
 define(["app"], function(app) {
 
     var bindings = [];
+
+    var module = {
+        html : 'myLeave/myLeaveQuota/myLeaveQuota.html'
+    }
     /**
      * Init the controller
      */
@@ -29,8 +33,11 @@ define(["app"], function(app) {
                     }
                 } else {
                     closeLoading();
-                    data.message = data.message || getI18NText('get-quota-fail');
-                    app.f7.alert(data.message);
+                    var message = data.message || getI18NText('get-quota-fail');
+                    if (parseInt(data.status) === 605) {
+                        message = getI18NText('DBError');
+                    }
+                    app.f7.alert(message);
                 }
                 var renderObject = {
                     selector: $('.myleavequota'),
@@ -58,15 +65,18 @@ define(["app"], function(app) {
             if (data.status && parseInt(data.status) === 1) {
                 storeWithExpiration.set('person_leaveQuota', data.data);
             } else {
-                data.message = data.message ||getI18NText('get-quota-fail');
-                app.f7.alert(data.message);
+                var message = data.message || getI18NText('get-quota-fail');
+                if (parseInt(data.status) === 605) {
+                    message = getI18NText('DBError');
+                }
+                app.f7.alert(message);
             }
         }
         var url = ess_getUrl("attendance/AttendanceAnnualLeave/getLeaveQuota/");
 
         if (storeWithExpiration.get('person_leaveQuota') === undefined || storeWithExpiration.get('person_leaveQuota') === null) {
             showLoading();
-            getAjaxData(url, onSucccess, onError);
+            getAjaxData(module,url, onSucccess, onError);
 
         } else {
             var data = {
@@ -75,7 +85,7 @@ define(["app"], function(app) {
             }
             onSucccess(data);
 
-            getAjaxData(url, onResetData, onError);
+            getAjaxData(module,url, onResetData, onError);
         }
     }
     return {

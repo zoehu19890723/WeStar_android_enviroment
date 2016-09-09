@@ -7,7 +7,7 @@ define(["app"], function(app) {
         event: 'click',
         handler: jumpPage
     }, {
-        element: '.wx-item',
+        element: '.wx-settings .wx-item',
         event: 'click',
         handler: openNewPage
     }, {
@@ -16,62 +16,61 @@ define(["app"], function(app) {
         handler: quitSystem
     }];
 
+    var module = {
+        html: 'self_base/self_base.html'
+    }
+
     function init() {
         if (!localStorage.getItem("userName") || !localStorage.getItem("passWord")) {
             return;
         }
         if (!storeWithExpiration.get("ee_person")) {
-            $.ajax({
-                type: "get",
-                url: ess_getUrl("humanresource/HumanResourceWebsvcService/getEmployeeProfile/"),
-                dataType: "jsonp",
-                timeout: 20000,
-                jsonp: "callback",
-                jsonpCallback: "jsonp" + getRandomNumber(),
-                success: function(json) {
-                    var model_ = {};
-                    if ("1" == json.status) {
-                        var card = json.data.profile;
-                        var photo = json.data.profile.photo;
-                        if (photo && '' !== photo && photo.indexOf(Star_imgUrl) < 0) {
-                            photo = photo.replace(/\s/g, '%20');
-                            json.data.profile.photo = Star_imgUrl + photo;
-                        }
-                        storeWithExpiration.set('ee_person', json.data);
-                        model_.card = card;
-                    } else if (json.status == "-1") {
-                        app.f7.alert(json.message, function() {
-                            app.mainView.router.load({
-                                url: "index.html"
-                            });
+            var onSuccess = function(json) {
+                var model_ = {};
+                if (parseInt(json.status) === 1) {
+                    var card = json.data.profile;
+                    var photo = json.data.profile.photo;
+                    if (photo && '' !== photo && photo.indexOf(Star_imgUrl) < 0) {
+                        photo = photo.replace(/\s/g, '%20');
+                        json.data.profile.photo = Star_imgUrl + photo;
+                    }
+                    storeWithExpiration.set('ee_person', json.data);
+                    model_.card = card;
+                } else if (parseInt(json.status) === -1) {
+                    app.f7.alert(json.message, function() {
+                        app.mainView.router.load({
+                            url: "index.html"
                         });
-                    } else {
-                        app.f7.alert(json.message);
-                    }
-
-                    var renderObject = {
-                        selector: $('.self_base'),
-                        hbsUrl: "js/ee_self/self_base/self_base",
-                        model: model_,
-                        bindings: bindings,
-                        beforeRender: weixin_hideBackButton,
-
-                    }
-                    viewRender(renderObject);
-
-                },
-                error: function(e) {
-                    closeLoading();
-                    app.f7.showPreloader(getI18NText('network-error'))
-                    setTimeout(function() {
-                        app.f7.hidePreloader();
-                    }, 2000);
-                    app.mainView.router.back({
-                        force: true,
-                        url: "index.html"
                     });
+                } else if (parseInt(json.status) === 605) {
+                    app.f7.alert(getI18NText('DBError'));
+                } else {
+                    app.f7.alert(json.message);
                 }
-            });
+
+                var renderObject = {
+                    selector: $('.self_base'),
+                    hbsUrl: "js/ee_self/self_base/self_base",
+                    model: model_,
+                    bindings: bindings,
+                    beforeRender: weixin_hideBackButton,
+
+                };
+                viewRender(renderObject);
+            }
+            var onError = function(e) {
+                closeLoading();
+                app.f7.showPreloader(getI18NText('network-error'));
+                setTimeout(function() {
+                    app.f7.hidePreloader();
+                }, 2000);
+                app.mainView.router.back({
+                    force: true,
+                    url: "index.html"
+                });
+            }
+            var url = ess_getUrl("humanresource/HumanResourceWebsvcService/getEmployeeProfile/");
+            getAjaxData(module, url, onSuccess, onError);
 
         } else {
             var model_ = {
@@ -84,7 +83,7 @@ define(["app"], function(app) {
                 bindings: bindings,
                 beforeRender: weixin_hideBackButton,
 
-            }
+            };
             viewRender(renderObject);
         }
         initWeChat();
@@ -107,73 +106,87 @@ define(["app"], function(app) {
                 localStorage.setItem("userName", userName);
                 localStorage.setItem('isFirstUse', '1');
                 localStorage.setItem('language', language);
-                if(languageSet !== undefined || languageSet !== null){
-                    localStorage.setItem('languageSet',languageSet);
+                if (languageSet !== undefined || languageSet !== null) {
+                    localStorage.setItem('languageSet', languageSet);
                 }
 
-                $.ajax({
-                    type: "get",
-                    url: ess_getUrl("user/userService/logout/"),
-                    dataType: "jsonp",
-                    timeout: 20000,
-                    jsonp: "callback",
-                    jsonpCallback: "jsonp" + getRandomNumber(),
-                    success: function() {
+                var onSuccess = function(data) {
+                    if(parseInt(data.status) === 1){
                         $('.navbar').addClass("navbar-none");
                         app.mainView.router.load({
                             url: "index.html"
                         });
-                    },
-                    error: function() {
-                        closeLoading();
-                        app.f7.alert(getI18NText('network-error'));
+                    }else if(parseInt(data.status) === 605){
+                        app.f7.alert(getI18NText('DBError'));
+                    }else{
+                        app.f7.alert(data.message);
                     }
-                });
+                    
+                }
+                var onError = function() {
+                    closeLoading();
+                    app.f7.alert(getI18NText('network-error'));
+                }
+                var url = ess_getUrl("user/userService/logout/");
+                getAjaxData(module, url, onSuccess, onError);
             });
     }
-    
+
     function jumpPage(e) {
         var id = $(e.currentTarget).attr("toPage");
         if ("myProfile" === id) {
             app.mainView.router.load({
                 url: "js/myProfile/myProfile.html",
                 animatePages: false
-            })
+            });
 
         } else if ("myContact" === id) {
             app.mainView.router.load({
                 url: "js/myContact/contactList/contactList.html",
                 animatePages: false
-            })
-        }
-        else  if ("myMessage" == id){
+            });
+        } else if ("myMessage" === id) {
             app.mainView.router.load({
                 url: "js/myMessage/messageOverview/messageOverview.html",
                 animatePages: false
-            })
+            });
         }
     }
 
     function openNewPage(e) {
         var id = $(e.currentTarget).attr("toPage");
-        if ("setting" == id) {
-            app.mainView.router.load({
-                url: "js/ee_self/setting/setting.html"
-            })
+        if (id === null || id === undefined || id === '') {
+            return;
         }
-        if ("feedback" == id) {
-            app.mainView.router.load({
-                url: "js/ee_self/feedback/feedback.html"
-            })
-        }
-        if ("online" == id) {
-            app.mainView.router.load({
-                url: "js/ee_self/online/online.html"
-            })
-        } else if ("HelpAbout" == id) {
-            app.mainView.router.load({
-                url: "js/HelpAbout/HelpAbout.html"
-            })
+        switch (id) {
+            case 'setting':
+                {
+                    app.mainView.router.load({
+                        url: "js/ee_self/setting/setting.html"
+                    });
+                    break;
+                }
+            case 'feedback':
+                {
+                    app.mainView.router.load({
+                        url: "js/ee_self/feedback/feedback.html"
+                    });
+                    break;
+                }
+            case 'online':
+                {
+                    app.mainView.router.load({
+                        url: "js/ee_self/online/online.html"
+                    });
+                    break;
+                }
+            case 'HelpAbout':
+                {
+                    app.mainView.router.load({
+                        url: "js/HelpAbout/HelpAbout.html"
+                    });
+                    break;
+                }
         }
     }
 
@@ -185,7 +198,7 @@ define(["app"], function(app) {
                 //alert(33333333)
                 navigator.WechatShare.showToast('请稍后...');
                 shareToWeixin(false);
-            }
+            };
 
             ////分享到朋友圈
             //var btn2 = document.getElementById('share_to_timeline');
@@ -214,8 +227,7 @@ define(["app"], function(app) {
                         break;
                 }
 
-            }
-
+            };
         });
     }
 
@@ -232,6 +244,4 @@ define(["app"], function(app) {
 
         navigator.WechatShare.send(args);
     }
-
-
 });
