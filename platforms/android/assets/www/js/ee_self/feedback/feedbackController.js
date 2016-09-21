@@ -12,8 +12,7 @@ define(["app"], function(app) {
             selector: $('.feedback'),
             hbsUrl: "js/ee_self/feedback/feedback",
             model:{},
-            bindings: bindings,
-            beforeRender: weixin_hideBackButton,
+            bindings: bindings
         }
         viewRender(renderObject);
     }

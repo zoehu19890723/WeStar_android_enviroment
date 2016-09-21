@@ -167,14 +167,7 @@ define(["app"], function(app) {
      * open photo edit page
      */
     function openPhotoPage(){
-        query_ = storeWithExpiration.get("ee_person").profile
-        var browser = localStorage.getItem("isWeixin");
-        if(browser!= null) {
-            if(browser=="1")
-                app.router.load("weixin_index/editPhoto",{controllerName:"personInfo",photo:query_.photo,ee_id:query_.id.toString(),photo_width:$(this)[0].offsetWidth},"weixin_index");
-        }
-        else {
-            app.router.load("editPhoto",{photo:query_.photo,ee_id:query_.id.toString(),photo_width:$(this)[0].offsetWidth});
-        }
+        query_ = storeWithExpiration.get("ee_person").profile;
+        app.router.load("editPhoto",{photo:query_.photo,ee_id:query_.id.toString(),photo_width:$(this)[0].offsetWidth});
     }
 });

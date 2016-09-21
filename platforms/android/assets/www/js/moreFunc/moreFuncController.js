@@ -9,8 +9,7 @@ define(["app"], function(app) {
             model: {
                 isNull: true
             },
-            bindings: bindings,
-            beforeRender: weixin_hideBackButton
+            bindings: bindings
         }
         viewRender(renderObject);
 

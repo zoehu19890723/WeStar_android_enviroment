@@ -50,8 +50,7 @@ define(["app"], function(app) {
                     selector: $('.myHRTransfer'),
                     hbsUrl: "js/HRTransfer/HRTransfer/HRTransfer",
                     model: model_,
-                    bindings: bindings,
-                    beforeRender: weixin_hideBackButton,
+                    bindings: bindings
                 }
                 viewRender(renderObject);
             }

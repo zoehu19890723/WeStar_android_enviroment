@@ -11,22 +11,22 @@ define(["app"], function(app) {
     var flag = 0;
 
     var bindings = [{
-        element: '.left',
-        event: 'click',
-        handler: openNewPage
-    }, {
-        element: '.wx-item',
-        event: 'click',
-        handler: seeDetail
-    }, {
-        element: '.wx-item',
-        event: 'touchstart',
-        handler: showFocus
-    }, {
-        element: '.wx-item',
-        event: 'touchend',
-        handler: hideFocus
-    },
+            element: '.left',
+            event: 'click',
+            handler: openNewPage
+        }, {
+            element: '.wx-item',
+            event: 'click',
+            handler: seeDetail
+        }, {
+            element: '.wx-item',
+            event: 'touchstart',
+            handler: showFocus
+        }, {
+            element: '.wx-item',
+            event: 'touchend',
+            handler: hideFocus
+        },
         //{element: '#search-key', event: 'click', handler: searchList},
         //{element: '#cancel-key', event: 'click', handler: init},
         {
@@ -71,8 +71,7 @@ define(["app"], function(app) {
                                     if (obj_.childList[i].gender == getI18NText('female') || obj_.childList[i].gender == "p_f" || obj_.childList[i].gender == false) obj_.childList[i].gender = false;
                                     else obj_.childList[i].gender = true;
                                     //增加拼音属性
-                                    if(obj_.childList[i].name)
-                                    {
+                                    if (obj_.childList[i].name) {
                                         obj_.childList[i].pinyin = pinyin.getFullChars(value[i].name).toLowerCase();
                                     }
                                     if (!obj_.childList[i].photo) {
@@ -123,24 +122,19 @@ define(["app"], function(app) {
     }
 
     function showList(model) {
-        var afterRender = function() {
-            weixin_hideToolBar()
-        }
         var renderObject = {
             selector: $('.myMessage'),
             hbsUrl: "js/myMessage/messageOverview/messageOverview",
             model: model,
-            bindings: bindings,
-            beforeRender: weixin_hideBackButton,
-            afterRender: afterRender
+            bindings: bindings
         }
         viewRender(renderObject);
     }
 
     function seeDetail(e) {
-        var id=$(e.currentTarget).attr("toPage");
+        var id = $(e.currentTarget).attr("toPage");
         app.mainView.router.load({
-            url: "js/myMessage/"+id+"/"+id+".html"
+            url: "js/myMessage/" + id + "/" + id + ".html"
         });
     }
 
@@ -163,12 +157,12 @@ define(["app"], function(app) {
                 url: "js/myContact/contactList/contactList.html",
                 animatePages: false
             })
-        } else  if ("myMessage" == id){
+        } else if ("myMessage" == id) {
             app.mainView.router.load({
                 url: "js/myMessage/messageOverview/messageOverview.html",
                 animatePages: false
             })
-        }else if("mySelf" == id){
+        } else if ("mySelf" == id) {
             app.mainView.router.load({
                 url: "js/ee_self/self_base/self_base.html",
                 animatePages: false

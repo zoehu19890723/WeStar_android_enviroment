@@ -109,14 +109,6 @@ define(["app"], function(app) {
 
     function renderView(model) {
         var afterRender = function() {
-            weixin_hideBackButton();
-            var isWeixin = localStorage.getItem("isWeixin");
-            if (isWeixin && "1" == isWeixin) {
-                var width = $("#mySalary_right").width();
-                var child_width = $("#mySalary-calender").width();
-                var padd = (width * 1 - child_width * 1 - 4) + "px";
-                $("#mySalary-calender").css("padding-left", padd);
-            }
             checkListItems();
         }
         var renderObject = {

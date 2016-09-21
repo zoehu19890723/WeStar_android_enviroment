@@ -86,7 +86,6 @@ define(["app"], function(app) {
                     hbsUrl: "js/HRTransfer/transferDetail/transferDetail",
                     model: model_,
                     bindings: bindings,
-                    beforeRender: weixin_hideBackButton,
                     afterRender: afterRender
                 }
                 viewRender(renderObject);

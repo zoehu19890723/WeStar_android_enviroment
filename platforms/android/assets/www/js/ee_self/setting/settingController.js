@@ -26,9 +26,7 @@ define(["app"], function(app) {
             selector: $('.setting'),
             hbsUrl: "js/ee_self/setting/setting",
             model: {},
-            bindings: bindings,
-            beforeRender: weixin_hideBackButton,
-
+            bindings: bindings
         }
         viewRender(renderObject);
     }

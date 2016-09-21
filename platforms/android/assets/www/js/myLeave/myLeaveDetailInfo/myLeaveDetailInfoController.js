@@ -99,7 +99,6 @@ define(["app"], function(app) {
                     hbsUrl: "js/myLeave/myLeaveDetailInfo/myLeaveDetailInfo",
                     model: model_,
                     bindings: bindings,
-                    beforeRender: weixin_hideBackButton,
                     afterRender: afterRender
                 }
                 viewRender(renderObject);
@@ -204,7 +203,7 @@ define(["app"], function(app) {
         var url = ess_getUrl("ess/ELeave/ApproveLeaveItem/");
         var reson = $("#leave-reson").val();
         if (reson === null || reson === "") {
-            reson = (parseInt(code) === 0) ? getI18NText('approve') : getI18NText('refuse')
+            reson = (parseInt(code) === 0) ? getI18NText('approve-apply') : getI18NText('refuse-apply')
         }
         var data = {
             "argsJson": JSON.stringify({

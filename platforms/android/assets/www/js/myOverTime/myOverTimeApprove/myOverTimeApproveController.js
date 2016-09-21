@@ -51,7 +51,6 @@ define(["app"], function(app) {
                     hbsUrl: "js/myOverTime/myOverTimeApprove/myOverTimeApprove",
                     model: model_,
                     bindings: bindings,
-                    beforeRender: weixin_hideBackButton,
                     afterRender: afterRender
                 }
                 viewRender(renderObject);

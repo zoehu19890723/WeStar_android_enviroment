@@ -50,7 +50,6 @@ define(["app"], function(app) {
                     hbsUrl: "js/myLeave/myLeaveApply/myLeaveApply",
                     model: model_,
                     bindings: bindings,
-                    beforeRender: weixin_hideBackButton,
                     afterRender: initPicker
                 }
                 viewRender(renderObject);

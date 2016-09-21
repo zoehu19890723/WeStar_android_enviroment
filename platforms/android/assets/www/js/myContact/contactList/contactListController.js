@@ -162,7 +162,6 @@ define(["app"], function(app) {
             hbsUrl: "js/myContact/contactList/contactList",
             model: {},
             bindings: bindings,
-            beforeRender: weixin_hideBackButton,
             afterRender: afterRender
         }
         viewRender(renderObject);

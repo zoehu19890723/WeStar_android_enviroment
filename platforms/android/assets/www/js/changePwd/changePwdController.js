@@ -1,4 +1,4 @@
-define(["app"], function (app) {
+define(["app"], function(app) {
 
 
     var bindings = [];
@@ -8,15 +8,14 @@ define(["app"], function (app) {
         var renderObject = {
             selector: $('.changePwd'),
             hbsUrl: "js/changePwd/changePwd",
-            model:{},
-            bindings: bindings,
-            beforeRender: weixin_hideBackButton,
+            model: {},
+            bindings: bindings
         }
         viewRender(renderObject);
-        
+
         var account = ":" + localStorage.getItem("login_userName") + ":";
 
-        $('.button-submit').click(function () {
+        $('.button-submit').click(function() {
             var orgPwd = $("#orgPwd").val();
             var newPwd = $("#newPwd").val();
             var new2Pwd = $("#new2Pwd").val();
@@ -43,40 +42,36 @@ define(["app"], function (app) {
                 $.ajax({
                     type: "get",
                     url: ess_getUrl("platform/changePassword"),
-                    data: {password: $("#orgPwd").val(), new_password: $("#newPwd").val()},
+                    data: {
+                        password: $("#orgPwd").val(),
+                        new_password: $("#newPwd").val()
+                    },
                     dataType: "jsonp",
                     timeout: 20000,
                     jsonp: "callback",
                     jsonpCallback: "jsonp" + getRandomNumber(),
-                    success: function (data) {
+                    success: function(data) {
                         closeLoading();
                         if (data.status == "0") {
                             app.f7.alert(data.message, '');
                         } else if (data.status == "-1") {
-                            app.f7.alert(data.message, function () {
+                            app.f7.alert(data.message, function() {
                                 app.router.load('login');
                             });
                         } else {
                             app.f7.alert(getI18NText('changeSuc'), '');
-                            $(".modal-button").click(function () {
-                                var isWeixin = localStorage.getItem("isWeixin");
-                                if (isWeixin && "1" == isWeixin) {
-                                    $("#orgPwd").val("");
-                                    $("#newPwd").val("");
-                                    $("#new2Pwd").val("");
-                                } else {
-                                    $('.navbar').addClass("navbar-none");
-                                    localStorage.removeItem("passWord");
-                                    app.mainView.router.load({
-                                        url: "index.html"
-                                    });
-                                }
+                            $(".modal-button").click(function() {
+                                $('.navbar').addClass("navbar-none");
+                                localStorage.removeItem("passWord");
+                                app.mainView.router.load({
+                                    url: "index.html"
+                                });
                             });
                         }
 
 
                     },
-                    error: function (e) {
+                    error: function(e) {
                         closeLoading();
                         app.f7.alert(getI18NText('network-error'));
                     }
@@ -84,7 +79,7 @@ define(["app"], function (app) {
             }
         });
 
-        $('.button-cancel').click(function () {
+        $('.button-cancel').click(function() {
             app.mainView.router.back();
         });
     }

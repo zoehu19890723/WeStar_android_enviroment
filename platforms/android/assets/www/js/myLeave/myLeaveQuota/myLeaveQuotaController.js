@@ -43,8 +43,7 @@ define(["app"], function(app) {
                     selector: $('.myleavequota'),
                     hbsUrl: "js/myLeave/myLeaveQuota/myLeaveQuota",
                     model: model_,
-                    bindings: bindings,
-                    beforeRender: weixin_hideBackButton
+                    bindings: bindings
                 }
                 viewRender(renderObject);
 

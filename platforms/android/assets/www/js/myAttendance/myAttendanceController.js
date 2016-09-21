@@ -731,8 +731,8 @@ define(["app"], function(app) {
                 isNull: true
             });
         } else {
-            if (monthStr === undefined) {
-                monthStr = monthArr[monthArr.length - 1];
+            if (monthStr === undefined && monthArr.length > 0) {
+                monthStr = monthArr[0];
             }
             store.set('currentSummaryMonth', monthStr);
             var url = ess_getUrl("attendance/SignInService/getMyAttendanceSummary/");
@@ -807,6 +807,7 @@ var map = null,
  * caculate current postion after baidu map loaded
  */
 function caculatePostion() {
+    $('.attend-location-des span').text(getI18NText('locating'));
     watchID = setInterval(function(){
         navigator.geolocation.getCurrentPosition(onSuccess, onError, {
             enableHighAccuracy: true,

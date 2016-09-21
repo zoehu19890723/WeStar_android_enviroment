@@ -21,8 +21,7 @@ define(["app","js/weStarPerson/summary/summaryController"], function (app,profil
             selector : $('.myleave'),
             hbsUrl : "js/myLeave/myLeave/myLeave",
             model : model_,
-            bindings : bindings,
-            beforeRender : weixin_hideBackButton
+            bindings : bindings
         }
         profile.setPersonalProfile(renderObject);
     }

@@ -95,7 +95,6 @@ define(["app"], function(app) {
                 hbsUrl: "js/myOverTime/myOverTimeDetailInfo/myOverTimeDetailInfo",
                 model: model_,
                 bindings: bindings,
-                beforeRender: weixin_hideBackButton,
                 afterRender: afterRender
             }
             viewRender(renderObject);
@@ -198,7 +197,7 @@ define(["app"], function(app) {
 
         var reson = $("#leave-reson").val();
         if (reson === null || reson === "") {
-            reson = (parseInt(code) === 0) ? getI18NText('approve') : getI18NText('refuse')
+            reson = (parseInt(code) === 0) ? getI18NText('approve-apply') : getI18NText('refuse-apply')
         }
         var url = ess_getUrl("ess/EOT/ApproveOverTimeItem/");
         var data = {

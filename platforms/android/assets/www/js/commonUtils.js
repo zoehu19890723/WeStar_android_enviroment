@@ -160,21 +160,6 @@ function initBrowser() {
 	JSON.parse(localStorage.browser).ios ? localStorage.setItem("device", 'ios') : localStorage.setItem("device", 'android');
 }
 
-function weixin_hideBackButton() {
-	var isWeixin = localStorage.getItem("isWeixin");
-	var ifHideBackIco = localStorage.getItem("ifHideBackIco");
-	if (isWeixin && "1" == isWeixin && ifHideBackIco && "true" == ifHideBackIco) {
-		$(".left .icon-back").parent().hide();
-	}
-}
-
-function weixin_hideToolBar() {
-	var isWeixin = localStorage.getItem("isWeixin");
-	if (isWeixin && "1" == isWeixin) {
-		$(".tabbar-labels").hide();
-	}
-}
-
 function textEdit(e) {
 	var val_ = $.trim($(this).val());
 	if ("" != val_) {

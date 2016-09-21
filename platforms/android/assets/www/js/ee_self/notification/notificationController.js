@@ -8,9 +8,7 @@ define(["app"], function(app) {
             selector: $('.notification'),
             hbsUrl: "js/ee_self/notification/notification",
             model:{},
-            bindings: bindings,
-            beforeRender: weixin_hideBackButton,
-
+            bindings: bindings
         }
         viewRender(renderObject);
     }

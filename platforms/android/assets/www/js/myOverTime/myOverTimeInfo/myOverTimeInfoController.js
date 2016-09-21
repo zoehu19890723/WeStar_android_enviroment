@@ -58,7 +58,6 @@ define(["app"], function(app) {
                     hbsUrl: "js/myOverTime/myOverTimeInfo/myOverTimeInfo",
                     model: model_,
                     bindings: bindings,
-                    beforeRender: weixin_hideBackButton,
                     afterRender : afterRender
                 }
                 viewRender(renderObject);

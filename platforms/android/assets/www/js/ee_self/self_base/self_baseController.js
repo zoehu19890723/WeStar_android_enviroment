@@ -52,9 +52,7 @@ define(["app"], function(app) {
                     selector: $('.self_base'),
                     hbsUrl: "js/ee_self/self_base/self_base",
                     model: model_,
-                    bindings: bindings,
-                    beforeRender: weixin_hideBackButton,
-
+                    bindings: bindings
                 };
                 viewRender(renderObject);
             }
@@ -80,9 +78,7 @@ define(["app"], function(app) {
                 selector: $('.self_base'),
                 hbsUrl: "js/ee_self/self_base/self_base",
                 model: model_,
-                bindings: bindings,
-                beforeRender: weixin_hideBackButton,
-
+                bindings: bindings
             };
             viewRender(renderObject);
         }

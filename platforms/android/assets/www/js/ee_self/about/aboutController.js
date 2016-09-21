@@ -8,9 +8,7 @@ define(["app"], function(app) {
             selector: $('.about'),
             hbsUrl: "js/ee_self/about/about",
             model: model,
-            bindings: bindings,
-            beforeRender: weixin_hideBackButton,
-
+            bindings: bindings
         }
         viewRender(renderObject);
     }

@@ -27,16 +27,11 @@ define(["app"], function(app) {
     }
 
     function showList(model) {
-        var afterRender = function() {
-            weixin_hideToolBar()
-        }
         var renderObject = {
             selector: $('.companyNews'),
             hbsUrl: "js/myMessage/companyNews/companyNews",
             model: model,
-            bindings: bindings,
-            beforeRender: weixin_hideBackButton,
-            afterRender: afterRender
+            bindings: bindings
         }
         viewRender(renderObject);
     }

@@ -65,7 +65,6 @@ define(["app"], function(app) {
                     hbsUrl: "js/myLeave/myLeaveInfo/myLeaveInfo",
                     model: model_,
                     bindings: bindings,
-                    beforeRender: weixin_hideBackButton,
                     afterRender: afterRender
                 }
                 viewRender(renderObject);

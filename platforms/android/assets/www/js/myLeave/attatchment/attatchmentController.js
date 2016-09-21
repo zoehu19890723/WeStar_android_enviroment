@@ -28,7 +28,6 @@ define(["app"], function(app) {
             hbsUrl: "js/myLeave/attatchment/attatchment",
             model: query_,
             bindings: bindings,
-            beforeRender: weixin_hideBackButton,
             afterRender: afterRender
         }
         viewRender(renderObject);

@@ -11,9 +11,7 @@ define(["app"], function (app) {
             selector: $('.online'),
             hbsUrl: "js/ee_self/online/online",
             model:{},
-            bindings: bindings,
-            beforeRender: weixin_hideBackButton,
-
+            bindings: bindings
         }
         viewRender(renderObject);
 

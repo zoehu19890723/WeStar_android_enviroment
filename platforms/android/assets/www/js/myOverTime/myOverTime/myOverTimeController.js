@@ -23,8 +23,7 @@ define(["app", "js/weStarPerson/summary/summaryController"], function(app, profi
             selector : $('.myovertime'),
             hbsUrl : "js/myOverTime/myOverTime/myOverTime",
             model : model_,
-            bindings : bindings,
-            beforeRender : weixin_hideBackButton
+            bindings : bindings
         }
         profile.setPersonalProfile(renderObject);
     }
