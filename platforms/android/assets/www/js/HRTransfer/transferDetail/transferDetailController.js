@@ -74,7 +74,7 @@ define(["app"], function(app) {
                     app.f7.alert(data.message);
                 }
                 var afterRender = function() {
-                    if (model_.data && model_.data.approvePerson !== undefined && model_.data.approvePerson !== null) {
+                    if (model_.data && model_.data.approvePerson !== undefined && model_.data.approvePerson !== null && model_.data.approvePerson.length > 0) {
                         var heightTop = $('.one-item').first().find('.status-img').offset().top;
                         var heightBottom = $('.one-item').last().find('.status-img').offset().top;
                         var height = heightBottom - heightTop + 40;

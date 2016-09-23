@@ -10,7 +10,6 @@
 
 .leave-item-time{
 	text-align: center;
-    font-size: 8px;
     padding-top: 5px;
 }
 .leave-item,.approve-flow-card .one-item{
@@ -27,7 +26,6 @@
 }
 
 .leave-item .summary{
-    font-size: 8px;
     flex: 1;
     padding: 0px;
     overflow: hidden;
@@ -36,7 +34,6 @@
 .leave-item .summary .title{
     font-weight: 700;
     line-height: 32px;
-    font-size: 14px;
     padding-left: 8px;
 }
 
@@ -45,19 +42,12 @@
     padding-left: 8px;
 }
 
-.leave-item .summary .value{
-    color: black;
-}
-
 .leave-item .summary .contentTitle{
     line-height: 32px;
-    font-size: 14px;
-    color: black;
     padding-left: 8px;
 }
 
 .leave-item .link-page{
-    font-size: 12px;
     padding-left: 8px;
     line-height: 24px;
     margin-top: 8px;
@@ -66,7 +56,7 @@
 
 .leave-item .link-page .click-detail{
 	flex:1;
-    border-top: 1px solid #cfcfcf;
+    border-top: 1px solid transparent;
 }
 
 .b_main{
@@ -95,19 +85,18 @@
 	left:16px; 
 	border-radius:5px; 
 	width: 100%;
-	background-color: #fff;
+	
 } 
 .noDataItem{
     text-align: center;
-    font-size: 18px;
     padding-top: 10px;
 }
 
 .basic-info-card{
-    background-color: #fff;
     padding: 16px 16px 0px 16px;
     position: relative;
 }
+
 
 .user-info{
     display: flex;
@@ -125,15 +114,13 @@
     display: flex;
     flex-direction: column;
     margin-left: 16px;
-    font-size: 12px;
     line-height: 18px;
 }
 
 .apply-descrition{
     margin-top: 8px;
-    font-size: 12px;
     line-height: 20px;
-    border-top: 1px #cfcfcf solid;
+    border-top: 1px solid transparent;
 }
 .approve-flow-card{
     position: relative;
@@ -146,22 +133,16 @@
 }
 .apply-descrition .apply-item span.value{
     font-weight: bold;
-    color: black;
     flex : 1;
 }
 
 .approve-flow-card .one-item .border{
-    border: 1px solid #cfcfcf;
+    border: 1px solid transparent;
     padding: 0 8px 8px 8px;
 }
 
 .approve-flow-card .one-item .out{
-    border-color:transparent #cfcfcf transparent transparent;
     top : 5px;
-}
-
-.approve-flow-card .one-item .in{
-    border-color:transparent #fff transparent transparent;
 }
 
 .approve-flow-card .one-item .user-image{
@@ -170,15 +151,8 @@
     width: 40px;
     height: 40px;
 }
-
-.approve-flow-card .one-item .user-describtion .name{
-    font-size: 14px;
-    color: black;
-}
-
 .approve-flow-card .one-item .user-info-time{
     text-align: end;
-    font-size: 8px;
     min-height: 16px;
 }
 
@@ -187,51 +161,14 @@
     top: -17px;
     left: 26px;
     z-index: -1;
-    color: #cecece;
     opacity: 0.7;
-}
-
-.status-2,.status-4,.status-bar.status-1{
-    color : rgb(115,200,16);
-}
-.status-1{
-    color : #ff9500;
-}
-.status-3,.status-bar.status-0{
-    color : #FF4500;
-}
-.status-0{
-    color : #cecece;
-}
-
-.status-img .status-2{
-    background-color: white;
-    border-radius: 10px;
-}
-.status-img .status-1{
-    background-color: orange;
-    color: white;
-    border-radius: 10px;
-}
-.status-img .status-3{
-    background-color: white;
-    border-radius: 10px;
-}
-.status-img .status-0{
-    width: 14px;
-    height: 14px;
-    background-color: white;
-    border-radius: 10px;
-    border: 2px solid #cecece;
 }
 
 .step-no{
     width: 20px;
     height: 20px;
-    background-color: white;
-    font-size: 14px;
     border-radius: 50%;
-    border: 1px solid #cecece;
+    border: 1px solid transparent;
     text-align: center;
 }
 .ajustItemInner{
@@ -256,12 +193,10 @@
     position: absolute;
     top: 0px;
     right: 10px;
-    font-size: 100px;
 }
 
 .approve-link-actions.disable-click,.cancel-link-actions.disable-click{
     pointer-events : none;
-    color: #cecece;
 }
 
 .edit_right_icon{
@@ -274,15 +209,12 @@
 .detail-reson-label{
     margin-bottom: 8px;
     margin-left: 16px;
-    color: black;
 }
 
 .detail-reson-text{
-    background-color: #fff;
     height: 60px;
 }
 .detail-edit-content{
-    background-color: #f0eff5;
     margin-bottom: 44px;
 }
 .detail-edit-content.focused{
@@ -299,13 +231,10 @@
 }
 
 .marker {
-    color: #ff6600;
     padding: 4px 10px;
-    border: 1px solid #fff;
+    border: 1px solid transparent;
     white-space: nowrap;
-    font-size: 12px;
     font-family: "";
-    background-color: #0066ff;
 }
 
 .wx-button.attendence-action{
@@ -314,7 +243,6 @@
 }
 .wx-button.attendence-action.disable-click{
     pointer-events : none;
-    background-color: #cecece;
 }
 
 .myAttendance .page-content{
@@ -329,18 +257,12 @@
 }
 .record-panel .record{
     padding: 8px;
-    font-size: 0.8rem;
     display: flex;
 }
 .record-panel .record .record-circle{
     width: 1rem;
     height: 1rem;
     border-radius: 50%;
-    background-color: #cfcfcf;
-}
-
-.record-panel .record .record-circle.status-{
-    background-color: rgb(1,124,192)!important;
 }
 
 .record-panel .record .record-content{
@@ -383,17 +305,12 @@
     z-index: -1;
 }
 
-.attendence-action-panel.disable .attendence-action{
+.attendence-action-panel.disable .attendence-action,
+.attendence-action-panel.attending .attendence-action
+{
     pointer-events: none;
-    background-color: #c1c1c1;
-}
-.attendence-action-panel.disable .attendence-action .attendance-back{
-    background: #cecece;
 }
 
-.attendence-action-panel.attending .attendence-action{
-    pointer-events: none;
-}
 .attendence-action-panel.attending .attendence-action .attendance-back{
     -webkit-animation : 0.8s linear 0s normal none infinite rotate;
 }
@@ -413,12 +330,10 @@
 
 .attendence-action-panel .attend-location-des{
     margin-top: 16px;
-    font-size: 0.8rem;
     pointer-events: auto;
 }
 
 .popup-close-btn{
-    font-size: 20px;
     margin: 2%;
     text-align: end;
     height: 5%;
@@ -434,7 +349,7 @@
 }
 
 .title-bar{
-    border-bottom: 1px solid #cfcfcf;
+    border-bottom: 1px solid transparent;
     margin: 8px 8px 0px 8px;
     display: flex;
     flex-direction: column;
@@ -446,7 +361,6 @@
 }
 .title-bar .status-bar{
     text-align: end;
-    font-size: 0.8rem;
 }
 .title-bar .address-info{
     display: flex;
@@ -459,18 +373,11 @@
     border: 1px solid transparent;
     border-radius: 16px;
     padding: 8px 10px 5px 10px;
-    font-size: 13px;
     display: flex;
     align-items: center;
 }    
 
-.WeStar_iconfont.myCompany{
-    font-size: 3rem;
-}
-
 .detail-address-info .company{
-    font-size: 1.2rem;
-    color: #212121;
     display: flex;
     align-items: center;
 }
@@ -483,13 +390,7 @@
     transform: rotate(-180deg);
 }
 
-.company .arrow-down{
-    font-size: 1rem;
-        
-}
-.detail-address-info .address{
-    font-size: 0.8rem;
-}
+
 .myAttendance .tabs{
     flex: 1;
     display: flex;
@@ -515,7 +416,6 @@
     border-radius: 10px 10px 0px 0px;
     display: flex;
     padding: 16px;
-    font-size: 1.5rem;
     position: relative;
 }
 .summary-detail-container{
@@ -538,9 +438,6 @@
 .summary-detail .title{
     font-weight: bold;
 }
-.summary-detail .value{
-    font-size: 1.5rem;
-}
 
 .abnormal-record-detail{
     margin: 8px 4px 4px 4px;
@@ -550,8 +447,7 @@
 }
 
 .abnormal-des{
-    border-bottom: 1px solid #cecece;
-    font-size: 14px;
+    border-bottom: 1px solid transparent;
     border-left: 4px solid transparent;
     padding-left: 4px;
     min-height: 20px;
@@ -592,7 +488,6 @@
     flex-direction: column;
     align-items: center;
     padding: 10px 0px 10px 0px;
-    font-size: 12px;
 }
 
 .team-container{
@@ -603,7 +498,7 @@
 .team-container .team-item-card{
     background: white;
     margin: 8px;
-    border: 1px solid #cecece;
+    border: 1px solid transparent;
     border-radius: 5px;
     padding: 8px;
 }
@@ -621,7 +516,7 @@
     line-height: 28px;
 }
 .team-item-card .team-member{
-    border-top: 1px solid #cecece;
+    border-top: 1px solid transparent;
     padding-top: 8px;
     display: flex;
     justify-content: space-between;
@@ -649,7 +544,6 @@
 .org-nav .nav-split{
     line-height: 30px;
     margin: 0px 8px 0px 8px;
-    font-size: 24px;
 }
 .org-nav .nav-split:last-child{
     display: none;
@@ -691,12 +585,11 @@
     background: rgba(40,40,40,0.75);
     text-align: center;
     border-radius: 5px;
-    color: #FFFFFF;
     padding: 0 8px;
 }
 
 .b_main .border .user-info:nth-last-of-type(n+2){
-    border-bottom: 1px solid #cecece;
+    border-bottom: 1px solid transparent;
     padding: 4px 0;
 }
 
@@ -704,10 +597,6 @@
     text-align: center;
     padding-top: 64px;
     font-weight: bold;
-}
-
-.tab-page-content{
-    background-color: #F0EFF5;
 }
 
 .tabs-animated-wrap.tab-content{
@@ -728,12 +617,120 @@
     border-radius: 0;
 }
 
-.theme-custom .back-color-imp,.theme-custom .swiper-pagination-bullet-active,.theme-custom .button.active{
+.moreFunc-text{
+    padding: 16px;
+    line-height: 100px;
+    text-align: center;
+    font-weight: bold;
+    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(lightblue), to(black));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.my-contact-list .wx-title{
+    height: 20px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 0;
+    margin-top: 3px;
+    border-bottom: 1px solid transparent;
+}
+
+.my-contact-list .wx-item{
+    padding: 7px 0;
+    margin: 0 7px;
+    border-top: 1px solid transparent;
+}
+
+.my-contact-list .wx-item .wx-icon {
+    width: 36px;
+    height:36px;
+    line-height: 36px;
+    border-radius: 50%;
+    float: left;
+    margin-right: 15px;
+}
+
+.wx-group .wx-title + .wx-item{
+    border-top-width: 0px;
+}
+/*-------------------------------------------font size------------------------------------------------*/
+.leave-item-time,
+.leave-item .summary,
+.approve-flow-card .one-item .user-info-time{
+    font-size: 8px;
+}
+
+.my-contact-list .wx-item .wx-icon{
+    font-size: 10px;
+}
+
+.leave-item .link-page,
+.user-describtion,
+.apply-descrition,
+.marker,
+.section-item,
+.my-contact-list .wx-title,
+.record-panel .record,
+.attendence-action-panel .attend-location-des,
+.title-bar .status-bar,
+.detail-address-info .address,
+.title-bar .date-info{
+    font-size: 12px;
+}
+
+.leave-item .summary .title,
+.leave-item .summary .contentTitle,
+.approve-flow-card .one-item .user-describtion .name,
+.step-no,
+.abnormal-des{
+    font-size: 14px;
+}
+
+.my-contact-list .wx-name,
+.company .arrow-down{
+  font-size: 16px;
+}
+
+.noDataItem,
+.detail-address-info .company{
+    font-size: 18px;
+}
+.popup-close-btn{
+    font-size: 20px;
+}
+.org-nav .nav-split,
+.moreFunc-text,
+.month-date-container,
+.summary-detail .value{
+    font-size: 24px;
+}
+.back-btn{
+    font-size: 28px;
+}
+
+.WeStar_iconfont.myCompany{
+    font-size: 48px;
+}
+
+.basic-info-card .final-status-image{
+    font-size: 100px;
+}
+
+/*------------------------------------------theme color-----------------------------------------------*/
+.theme-custom .back-color-imp,
+.theme-custom .swiper-pagination-bullet-active,
+.theme-custom .button.active,
+.theme-custom .record-panel .record .record-circle.status-{
     background-color: rgb(1,124,192)!important;
     color: white!important;
 }
 
-.theme-custom .font-color-with-imp,.theme-custom i.icon,.theme-custom .tabbar a.active{
+.theme-custom .font-color-with-imp,
+.theme-custom i.icon,
+.theme-custom .tabbar a.active{
     color : rgb(1,124,192)!important;
 }
 
@@ -744,7 +741,6 @@
 
 .theme-custom .back-btn{
     color : rgb(1,124,192);
-    font-size: 28px;
 }
 
 .theme-custom .border-right-color{
@@ -764,7 +760,8 @@
     background-color: rgba(1,124,192,.1);
 }
 
-.theme-custom .font-color-with-7,.theme-custom .nav-item.isSelf.font-color-with-spec{
+.theme-custom .font-color-with-7,
+.theme-custom .nav-item.isSelf.font-color-with-spec{
     color : rgba(1,124,192,.7);
 }
 
@@ -778,54 +775,114 @@
 .theme-custom .linear-back{
     background: -webkit-gradient(linear, 0 100%, 0 0, from(rgba(1,124,192,.6)), to(rgba(1,124,192,.2)));
 }
+.theme-custom .leave-item .summary .value,
+.theme-custom .leave-item .summary .contentTitle,
+.theme-custom .apply-descrition .apply-item span.value,
+.theme-custom .approve-flow-card .one-item .user-describtion .name,
+.theme-custom .detail-reson-label{
+    color: black;
+}
 
-.my-contact-list .wx-title {
-    height: 20px;
-    line-height: 20px;
-    font-size: 12px;
+.theme-custom .flow-line,
+.theme-custom .approve-link-actions.disable-click,
+.theme-custom .cancel-link-actions.disable-click,
+.theme-custom .status-0{
+    color: #cecece;
+} 
+
+.theme-custom .wx-button.attendence-action.disable-click{
+    background-color: #cecece;
+}
+.theme-custom .border,
+.theme-custom .basic-info-card,
+.theme-custom .detail-reson-text{
+    background-color: #fff;
+}
+.theme-custom .detail-edit-content,
+.theme-custom .tab-page-content{
+    background-color: #f0eff5;
+}
+
+.theme-custom .marker{
+    color: #ff6600;
+    border-color: #fff;
+    background-color: #0066ff;
+}
+
+.theme-custom .record-panel .record .record-circle{
+    background-color: #cfcfcf;
+}
+
+.theme-custom .leave-item .link-page .click-detail,
+.theme-custom .apply-descrition,
+.theme-custom .approve-flow-card .one-item .border,
+.theme-custom .title-bar
+{
+    border-color : #cfcfcf;
+}
+
+.theme-custom .attendence-action-panel.disable .attendence-action{
+    background-color: #c1c1c1;
+}
+.theme-custom .attendence-action-panel.disable .attendence-action .attendance-back{
+    background: #cecece;
+}
+
+.theme-custom .status-2,.status-4,.status-bar.status-1{
+    color : rgb(115,200,16);
+}
+.theme-custom .status-1{
+    color : #ff9500;
+}
+.theme-custom .status-3,.status-bar.status-0{
+    color : #FF4500;
+}
+
+.theme-custom .step-no{
+    background-color: white;
+    border-color: #cecece;
+}
+
+.theme-custom .detail-address-info .company{
+    color: #212121;
+}
+
+.theme-custom .toast_content{
+    color : #fff;
+}
+.theme-custom .b_main .border .user-info:nth-last-of-type(n+2),
+.theme-custom .team-container .team-item-card,
+.theme-custom .team-item-card .team-member,
+.theme-custom .my-contact-list .wx-title,
+.theme-custom .my-contact-list .wx-item{
+    border-color: #cecece
+}
+
+.theme-custom .my-contact-list .wx-title{
     color: #888888;
     background: #ebebeb;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 0 0;
-    margin-top: 3px;
-    border-bottom: 1px solid #cecece;
 }
-.my-contact-list .wx-item{
-    padding: 7px 0;
-    margin: 0 7px;
-    border-top: 1px solid #cecece;
-}
-.my-contact-list .wx-item .wx-icon {
-    width: 36px;
-    height:36px;
-    line-height: 36px;
-    border-radius: 50%;
+
+.theme-custom .my-contact-list .wx-item .wx-icon{
     color: #CCC;
-    font-size: 10px;
-    float: left;
-    margin-right: 15px;
+}
+.theme-custom .my-contact-list .wx-name{
+    color: #424242;
 }
 
-.my-contact-list .wx-name{
-  font-size: 16px;
-  color: #424242;
+.theme-custom .approve-flow-card .one-item .out{
+    border-color:transparent #cfcfcf transparent transparent;
 }
 
-.wx-group .wx-title + .wx-item{
-    border-top-width: 0px;
+.theme-custom .approve-flow-card .one-item .in{
+    border-color:transparent #fff transparent transparent;
 }
 
-.moreFunc-text{
-    padding: 16px;
-    line-height: 100px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(lightblue), to(black));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.theme-custom .abnormal-des{
+    border-bottom-color:#cecece;
+    border-left-color: rgb(1,124,192);
 }
+
+
 
 

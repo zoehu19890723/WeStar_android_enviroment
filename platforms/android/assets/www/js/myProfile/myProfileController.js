@@ -10,6 +10,10 @@ define(["app"], function(app) {
         handler: jumpPage
     }];
 
+    var module = {
+            html : 'myProfile/myProfile.html',
+        }
+
     function init() {
         $('.navbar').removeClass("navbar-none");
         initWeStar();

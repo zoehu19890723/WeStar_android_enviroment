@@ -10,12 +10,13 @@ var EXPIRATION_TIME = 30*24*60*60*1000;
 
 //发布系统
 //1.修改后端服务 url
-//var Star_imgUrl = WebUrlPath.WEB_WESTAR_PRO;
-//var Star_envUrl=Star_imgUrl+WebUrlPath.WEB_WESTAR_SERVICE_PRO;
+// var Star_imgUrl = WebUrlPath.WEB_WESTAR_PRO;
+// var Star_envUrl=Star_imgUrl+WebUrlPath.WEB_WESTAR_SERVICE_PRO;
 // var Star_imgUrl = WebUrlPath.WEB_WESTAR;
 // var Star_envUrl=Star_imgUrl+WebUrlPath.WEB_WESTAR_SERVICE;
- var Star_imgUrl = WebUrlPath.WEB_WESTAR_Ali;
- var Star_envUrl=Star_imgUrl+WebUrlPath.WEB_WESTAR_SERVICE_PRO;
+var Star_imgUrl = WebUrlPath.WEB_WESTAR_Ali;
+var Star_envUrl=Star_imgUrl+WebUrlPath.WEB_WESTAR_SERVICE_PRO;
+
 
 //2.修改app版本 
 var Star_appVersion = '1.0.0';
